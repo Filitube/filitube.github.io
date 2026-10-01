@@ -408,13 +408,145 @@ nav.tabs button[aria-selected="true"] svg{stroke:url(#navg);color:var(--g1);filt
 @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 .view{animation:none}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* ================= v4: fix + duolingo vibes ================= */
+body::before{filter:none}
+nav.tabs button[aria-selected="true"] svg{filter:none}
+.ring svg{overflow:visible}
+.ring .ra{transition:stroke-dasharray 1.1s cubic-bezier(.2,.8,.2,1)}
+.over::before{display:none}
+.over{background:radial-gradient(120% 90% at 0% 0%,color-mix(in srgb,var(--g1) 18%,transparent),transparent 60%),var(--surface)}
+
+/* bottoni 3D */
+.btn{box-shadow:0 5px 0 color-mix(in srgb,var(--g2) 55%,#000),0 12px 24px -10px var(--g1);transition:transform .08s,box-shadow .08s}
+.btn.press:active{transform:translateY(4px);box-shadow:0 1px 0 color-mix(in srgb,var(--g2) 55%,#000)}
+.btn.soft{box-shadow:0 4px 0 rgba(0,0,0,.35),0 1px 0 var(--hl) inset}
+.btn.soft.press:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.35)}
+.btn.danger{box-shadow:0 4px 0 color-mix(in srgb,var(--red) 30%,#000)}
+.btn.danger.press:active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,var(--red) 30%,#000)}
+.keypad button{box-shadow:0 4px 0 rgba(0,0,0,.35),0 1px 0 var(--hl) inset;transition:transform .08s,box-shadow .08s}
+.keypad button.press:active{transform:translateY(3px);box-shadow:0 1px 0 rgba(0,0,0,.35)}
+.keypad button[aria-pressed="true"]{box-shadow:0 4px 0 color-mix(in srgb,var(--g2) 55%,#000)}
+.mods button{box-shadow:0 3px 0 rgba(0,0,0,.35)}
+.mods button.press:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.35)}
+.chip{box-shadow:0 3px 0 rgba(0,0,0,.3)}
+.chip.press:active{transform:translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.3)}
+.fab{box-shadow:0 6px 0 color-mix(in srgb,var(--g2) 55%,#000),0 16px 34px -10px var(--g1)}
+.fab.press:active{transform:translateY(5px);box-shadow:0 1px 0 color-mix(in srgb,var(--g2) 55%,#000)}
+.subj.press:active{transform:scale(.98)}
+
+/* livello */
+.lvpill{margin-left:6px;font:inherit;font-size:12px;font-weight:700;color:#fff;background:linear-gradient(135deg,var(--g1),var(--g2));padding:3px 9px;border-radius:999px;vertical-align:1px;box-shadow:0 2px 0 color-mix(in srgb,var(--g2) 55%,#000)}
+.lvcard{display:flex;gap:14px;align-items:center;margin-top:16px;padding:18px;border-radius:26px;background:radial-gradient(120% 120% at 0% 0%,color-mix(in srgb,var(--g2) 30%,transparent),transparent 60%),var(--surface);box-shadow:var(--shadow)}
+.lvi{flex:1;min-width:0}
+.lvk{font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.lvi b{display:block;font-family:Sora,sans-serif;font-size:22px;letter-spacing:-.03em;margin:2px 0 10px}
+.lvs{display:block;font-size:12px;color:var(--muted);margin-top:8px}
+.xpbar{height:12px;border-radius:99px;background:var(--surface2);overflow:hidden;box-shadow:inset 0 2px 3px rgba(0,0,0,.25)}
+.xpbar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,#FFC145,#FF8A3D);position:relative;transition:width 1s cubic-bezier(.2,.8,.2,1)}
+.xpbar i::after{content:'';position:absolute;left:6px;right:6px;top:2px;height:3px;border-radius:9px;background:rgba(255,255,255,.45)}
+.lvmini{display:flex;align-items:center;gap:12px;width:100%;text-align:left;background:var(--surface);box-shadow:var(--shadow);border-radius:20px;padding:12px 14px}
+.lvmini>div{flex:1;min-width:0}
+.lvmini b{display:block;font-weight:700;font-size:14px;margin-bottom:6px}
+.lvn{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;font-family:Sora,sans-serif;font-weight:800;font-size:20px;color:#fff;background:linear-gradient(135deg,#FFC145,#FF8A3D);box-shadow:0 3px 0 #B9621C}
+.lvb{font-weight:700;font-size:14px}
+
+/* traguardi */
+.rhead{display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px;margin:18px 4px 10px}
+.rhead small{margin-left:auto;color:var(--muted);font-weight:600}
+.rdot{width:10px;height:10px;border-radius:50%;box-shadow:0 0 10px currentColor}
+.bgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.btile{display:flex;flex-direction:column;align-items:center;gap:8px;padding:14px 6px 12px;border-radius:20px;background:var(--surface);box-shadow:var(--shadow);text-align:center}
+.btile b{font-size:12px;font-weight:700;line-height:1.2}
+.medal{position:relative;border-radius:50%;display:grid;place-items:center;flex:0 0 auto}
+.medal.on{background:radial-gradient(circle at 35% 30%,color-mix(in srgb,var(--rc) 55%,#fff),var(--rc) 55%,color-mix(in srgb,var(--rc) 55%,#000));box-shadow:0 4px 0 color-mix(in srgb,var(--rc) 45%,#000),0 0 22px -4px var(--rc),inset 0 2px 0 rgba(255,255,255,.4)}
+.medal.on span{filter:drop-shadow(0 2px 2px rgba(0,0,0,.3))}
+.medal.off{background:var(--surface2);box-shadow:inset 0 0 0 2px color-mix(in srgb,var(--rc) 35%,transparent)}
+.medal.off span{filter:grayscale(1) brightness(.6);opacity:.45}
+.medal .lk{position:absolute;right:-2px;bottom:-2px;font-size:.36em;font-style:normal;background:var(--bg);border-radius:50%;width:1.7em;height:1.7em;display:grid;place-items:center}
+.medal.on.r-leggendario::after{content:'';position:absolute;inset:0;border-radius:50%;background:linear-gradient(115deg,transparent 35%,rgba(255,255,255,.65) 50%,transparent 65%);background-size:250% 100%;animation:shine 2.6s ease-in-out infinite}
+@keyframes shine{from{background-position:130% 0}to{background-position:-130% 0}}
+.bprog{width:70%;height:6px;border-radius:9px;background:var(--surface2);overflow:hidden}
+.bprog i{display:block;height:100%;border-radius:9px;transition:width .9s}
+.bprog.big{width:100%;height:10px;margin-top:16px}
+.bdet{position:relative;display:flex;flex-direction:column;align-items:center;text-align:center;padding:18px 0 4px;overflow:hidden}
+.bdet h3{margin:10px 0 4px;font-size:24px}
+.bdet p{margin:0;color:var(--muted)}
+.rpill{display:inline-block;margin-top:16px;font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--rc);background:color-mix(in srgb,var(--rc) 15%,transparent);padding:5px 10px;border-radius:999px}
+.rays{position:absolute;left:50%;top:84px;width:420px;height:420px;margin:-210px 0 0 -210px;border-radius:50%;background:repeating-conic-gradient(from 0deg,color-mix(in srgb,var(--rc) 40%,transparent) 0 10deg,transparent 10deg 24deg);-webkit-mask:radial-gradient(circle,#000 0,transparent 62%);mask:radial-gradient(circle,#000 0,transparent 62%);animation:spin 14s linear infinite;pointer-events:none;opacity:.8}
+.bdet>*:not(.rays){position:relative}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* mascotte */
+.orbi{overflow:visible;flex:0 0 auto}
+.orbi .ob-body{transform-box:view-box;transform-origin:50px 85px;animation:obbob 2.8s ease-in-out infinite}
+.orbi .ob-eyes{transform-box:view-box;transform-origin:50px 50px;animation:blink 4.2s infinite}
+.orbi .ob-ant{animation:antg 1.6s ease-in-out infinite}
+.orbi.ob-ecstatic .ob-body{animation:objump .55s cubic-bezier(.3,0,.5,1) infinite alternate}
+.orbi.ob-sad .ob-body{animation:obsad 3s ease-in-out infinite}
+.orbi .ob-tear{animation:tear 1.8s ease-in infinite}
+@keyframes obbob{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-4px) rotate(-3deg)}}
+@keyframes objump{from{transform:translateY(2px) scale(1.04,.96)}to{transform:translateY(-9px) scale(.97,1.03)}}
+@keyframes obsad{0%,100%{transform:translateY(2px) rotate(2deg)}50%{transform:translateY(4px) rotate(-2deg)}}
+@keyframes blink{0%,93%,100%{transform:scaleY(1)}96%{transform:scaleY(.1)}}
+@keyframes antg{0%,100%{opacity:1}50%{opacity:.55}}
+@keyframes tear{0%{transform:translateY(0);opacity:0}20%{opacity:1}100%{transform:translateY(14px);opacity:0}}
+.orbi.pop{animation:popin .6s cubic-bezier(.2,1.6,.4,1) both}
+@keyframes popin{from{transform:scale(.2) rotate(-20deg);opacity:0}to{transform:none;opacity:1}}
+.msg{gap:10px;padding:10px 16px 10px 8px}
+.msg .orbi{margin:-6px 0}
+
+/* celebrazioni */
+.celebrate.on .celcard{animation:none}
+.celcard{overflow:hidden;opacity:0;transform:scale(.6);width:min(330px,calc(100vw - 40px))}
+.celebrate.on .celcard.in{animation:pop .5s cubic-bezier(.2,1.5,.4,1) forwards}
+.celcard>*:not(.rays){position:relative}
+.celcard .rays{top:110px}
+.cmas{display:flex;justify-content:center;margin:-8px 0 6px}
+.celcard .gv{font-size:46px;padding:4px 22px}
+.xprow{display:flex;align-items:center;gap:10px;margin-top:16px}
+.xpchip{font-family:Sora,sans-serif;font-weight:800;font-size:15px;color:#FFC145;white-space:nowrap}
+.xprow .xpbar{flex:1;height:12px}
+.xplv{font-size:12px;font-weight:700;color:var(--muted);white-space:nowrap}
+.lvbig{font-family:Sora,sans-serif;font-size:84px;font-weight:800;line-height:1;letter-spacing:-.05em;background:linear-gradient(135deg,#FFC145,#FF8A3D);-webkit-background-clip:text;background-clip:text;color:transparent;animation:popin .7s cubic-bezier(.2,1.6,.4,1) .15s both}
+.bpop{display:flex;justify-content:center;margin:6px 0 4px;animation:bflip .9s cubic-bezier(.2,1.3,.4,1) both}
+@keyframes bflip{from{transform:perspective(400px) rotateY(540deg) scale(.3);opacity:0}to{transform:none;opacity:1}}
+
+/* dist animata */
+.dist i{height:0;transition:height .8s cubic-bezier(.2,.8,.2,1)}
+
+/* ================= INTRO ================= */
+.intro{background:#07080F;overflow:hidden;transition:opacity .6s ease}
+.intro.out{opacity:0}
+.intro.out .scene{transform:scale(1.18);transition:transform .7s cubic-bezier(.5,0,.75,0)}
+.intro .warp{position:absolute;inset:0}
+.intro .warp i{position:absolute;left:50%;top:50%;width:2px;height:calc(40px*var(--s));margin-left:-1px;border-radius:2px;background:linear-gradient(to top,rgba(255,255,255,0),#fff);transform-origin:50% 0;opacity:0;animation:warp 1.1s cubic-bezier(.5,0,.9,.4) var(--dl) both}
+@keyframes warp{0%{transform:rotate(var(--a)) translateY(10px) scaleY(.1);opacity:0}25%{opacity:.9}100%{transform:rotate(var(--a)) translateY(75vmax) scaleY(2.4);opacity:0}}
+.intro .scene{position:relative;display:flex;flex-direction:column;align-items:center}
+.intro .orb{width:180px;height:180px;overflow:visible;transform:none}
+.intro .iicon{position:absolute;top:22px;left:50%;width:136px;height:136px;margin-left:-68px;border-radius:32px;animation:iicon .5s ease-in forwards}
+@keyframes iicon{to{transform:scale(.6);opacity:0}}
+.intro .itrack{opacity:0;animation:fadein .4s ease .15s forwards}
+
+.intro .iplanet{opacity:0}
+@keyframes orbit{from{transform:rotate(0);opacity:1}to{transform:rotate(285deg);opacity:1}}
+.intro .ispark{transform-box:view-box;transform-origin:80px 80px;transform:scale(0);animation:spark .6s cubic-bezier(.2,1.6,.4,1) 1.15s forwards}
+@keyframes spark{0%{transform:scale(0) rotate(-90deg)}100%{transform:scale(1) rotate(0)}}
+@keyframes fadein{to{opacity:1}}
+.intro .iword{display:flex;margin-top:22px;font-family:Sora,sans-serif;font-size:40px;font-weight:800;letter-spacing:-.04em;color:#fff}
+.intro .iword span{display:inline-block;opacity:0;transform:translateY(24px);animation:letter .55s cubic-bezier(.2,1.4,.4,1) calc(1.3s + var(--i)*.05s) forwards}
+@keyframes letter{to{opacity:1;transform:none}}
+.intro .itag{margin-top:6px;font-size:14px;letter-spacing:.08em;color:#8E93B3;opacity:0;animation:fadein .5s ease 1.8s forwards}
+.intro .quick .ispark{animation-delay:.55s}
+.intro .quick .iicon{animation-duration:.3s}
+.intro .quick .itrack{animation-delay:0s}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
 </style>
 </head>
 <body>
 <div class="intro" id="intro" aria-hidden="true"><img class="logo" src="icon-512.png" alt=""></div>
 <div class="wrap">
   <div class="titlebar">
-    <div><div class="hello" id="hello">Ciao Filippo</div><h1 id="ttl">I tuoi voti</h1></div>
+    <div><div class="hello" id="hello">Ciao Filippo<button class="lvpill press" id="lvpill" data-goto="obiettivi"></button></div><h1 id="ttl">I tuoi voti</h1></div>
     <button class="round press" id="settingsBtn" aria-label="Impostazioni"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></button>
   </div>
   <div class="seg periods" id="periods" role="group" aria-label="Periodo">
@@ -523,13 +655,9 @@ function render(){
   $('#periods').style.display=tab==='orario'?'none':'';
   const v=$('#view');
   v.innerHTML=`<div class="view">${tab==='voti'?viewVoti():tab==='obiettivi'?viewObiettivi():tab==='crediti'?viewCrediti():viewOrario()}</div>`;
-  bind(v);
+  bind(v);afterRender(v);
 }
 const GR={red:['#FF5F6D','#FF9A8B'],amber:['#FFB938','#FFE066'],green:['#3DDBA4','#4CC9F0'],none:['#3A3F55','#3A3F55'],best:['#3DDBA4','#4CC9F0']};
-function ring(val){
-  const C=2*Math.PI*54,p=val==null?0:Math.max(0,Math.min(1,val/10)),t=tone(val),g=GR[t]||GR.none;
-  return `<div class="ring"><svg viewBox="0 0 128 128"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${g[0]}"/><stop offset="1" stop-color="${g[1]}"/></linearGradient></defs><circle cx="64" cy="64" r="54" fill="none" stroke="var(--track)" stroke-width="11"/><circle class="rgl" cx="64" cy="64" r="54" fill="none" stroke="url(#rg)" stroke-width="11" stroke-linecap="round" stroke-dasharray="${C*p} ${C}" style="--gc:${g[0]}"/></svg><div class="v"><b>${fmt(val)}</b><span>media</span></div></div>`;
-}
 function ringOld(val){
   const C=2*Math.PI*54,p=val==null?0:Math.max(0,Math.min(1,val/10)),t=tone(val);
   return `<div class="ring"><svg viewBox="0 0 128 128"><circle cx="64" cy="64" r="54" fill="none" stroke="var(--surface2)" stroke-width="12"/><circle cx="64" cy="64" r="54" fill="none" stroke="var(--${t==='none'?'edge':t})" stroke-width="12" stroke-linecap="round" stroke-dasharray="${C*p} ${C}"/></svg><div class="v"><b>${fmt(val)}</b><span>media</span></div></div>`;
@@ -560,7 +688,7 @@ function viewVoti(){
   return h;
 }
 function stepper(id,title,sub,val){return `<div class="ctlrow"><div class="l"><b>${title}</b>${sub?`<span>${sub}</span>`:''}</div><div class="step"><button data-step="${id}" data-d="-1" aria-label="Diminuisci">−</button><output>${val}</output><button data-step="${id}" data-d="1" aria-label="Aumenta">+</button></div></div>`}
-function viewObiettivi(){
+function viewObiettiviOld(){
   let h=`<div class="card" style="margin-top:16px">${stepper('target','Media obiettivo','in ogni materia',fmt(S.target))}${stepper('k','Verifiche rimaste','per materia, a peso pieno',S.k)}</div>`;
   const rows=S.subjects.filter(s=>gradesOf(s).length).map(s=>({s,a:subjAvg(s),x:needed(s,S.target,S.k)})).sort((p,q)=>q.x-p.x);
   if(!rows.length)return h+`<div class="empty" style="margin-top:16px"><div class="em">🎯</div><p>Inserisci qualche voto e qui vedrai quanto ti serve in ogni materia</p></div>`;
@@ -709,14 +837,15 @@ function openGradeForm(subjectId,after,opts){
       const label=f.n+(f.mod==='-'?'−':f.mod);
       const pp=periodOf(f.date),sameP=s2.grades.filter(g=>periodOf(g.date)===pp),before=avg(sameP);
       const gv=gradeVal(f.n,f.mod);
-      s2.grades.push({id:uid(),v:gv,label,type:f.type,w:f.w,date:f.date});save();
+      s2.grades.push({id:uid(),v:gv,label,type:f.type,w:f.w,date:f.date,ts:Date.now()});save();
       const afterA=avg(sameP.concat([{v:gv,w:f.w}]));
       after?after():closeSheet();
       if(opts.onSaved)opts.onSaved();
-      if(before!=null&&before<6&&afterA>=6&&!S.badges.includes('rimonta')){S.badges.push('rimonta');S._newB=['rimonta'];}
-      const nb=(S._newB||[]).concat(checkBadges());delete S._newB;save();
+      const ev={rimonta:before!=null&&before<6&&afterA>=6,night:new Date().getHours()<5};
+      const xp0=S.xp||0,gain=xpFor(gv);S.xp=xp0+gain;
+      const nb=checkBadges(ev);save();
       render();
-      celebrate(gv,label,s2,before,afterA,pp,nb);
+      celebrate(gv,label,s2,before,afterA,pp,{nb,xp0,gain});
     };
   };
   draw(false);
@@ -760,24 +889,6 @@ const MSG={
   low:[['Capita a tutti','Un voto non ti definisce. Si recupera.'],['Testa alta 🫶','Il prossimo è tuo.'],['Ok, ripartiamo','Adesso sai cosa ripassare.']]
 };
 function buzz(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
-function celebrate(v,label,s,before,after,per,newB){
-  const tier=v>=9?'top':v>=8?'high':v>=6?'ok':v>=5?'near':'low';
-  const [t,sub]=pick(MSG[tier]);
-  let ctx='';
-  if(before!=null&&before<6&&after>=6)ctx=`🎉 Hai portato ${esc(s.name)} sopra il 6!`;
-  else if(before!=null&&before>=6&&after<6){const x=needed1(s,per);ctx=x<=10?`Per tornare a 6 ti serve almeno ${fmtQ(x)} nella prossima`:`Media ${fmt(after)}, servono un paio di voti per risalire`;}
-  else if(before!=null&&after>before+0.005)ctx=`Media di ${esc(s.name)}: ${fmt(before)} → ${fmt(after)} 📈`;
-  else if(before!=null&&after<before-0.005)ctx=`Media di ${esc(s.name)}: ${fmt(before)} → ${fmt(after)}`;
-  else ctx=`Primo voto in ${esc(s.name)}`;
-  const cel=$('#cel'),card=$('#celcard');
-  card.className='celcard'+(v<6?' low':'');
-  card.innerHTML=`<div class="gv t-${tone(v)}">${esc(label)}</div><h4>${t}</h4><p>${sub}</p><div class="ctx">${ctx}</div>${newB&&newB.length?newB.map(id=>{const b=BADGES.find(x=>x.id===id);return `<div class="ctx" style="background:color-mix(in srgb,var(--amber) 16%,transparent)">🏅 Traguardo: ${b.e} ${b.t}</div>`}).join(''):''}<div class="tap">Tocca per chiudere</div>`;
-  cel.classList.add('on');
-  buzz(v>=8?[30,60,30,60,60]:v>=6?[30]:[15]);
-  if((v>=6||(newB&&newB.length))&&!matchMedia('(prefers-reduced-motion: reduce)').matches)confetti(v>=8||(newB&&newB.length)?160:50,v>=9);
-  clearTimeout(cel._t);cel._t=setTimeout(hideCel,v>=8?3400:2800);
-}
-function hideCel(){$('#cel').classList.remove('on')}
 $('#cel').onclick=hideCel;
 function needed1(s,per){let w=0,v=0;s.grades.filter(g=>periodOf(g.date)===per).forEach(g=>{w+=g.w;v+=g.v*g.w});return(6*(w+100)-v)/100}
 function confetti(n,gold){
@@ -791,20 +902,6 @@ function confetti(n,gold){
       if(p.sh){x.fillRect(-p.r/2,-p.r/4,p.r,p.r/2)}else{x.beginPath();x.arc(0,0,p.r/2.4,0,7);x.fill()}x.restore()});
     if(f<150)c._r=requestAnimationFrame(step);else x.clearRect(0,0,innerWidth,innerHeight)};
   step();
-}
-function dailyMsg(){
-  const all=S.subjects.flatMap(s=>gradesOf(s).map(g=>({...g,s})));
-  if(!all.length)return'';
-  const rows=S.subjects.map(s=>({s,a:subjAvg(s)})).filter(r=>r.a!=null);
-  const last=all.sort((a,b)=>b.date.localeCompare(a.date))[0];
-  const days=(Date.now()-new Date(last.date+'T12:00'))/864e5;
-  let e,t,sub;
-  const worst=rows.filter(r=>r.a<6).sort((a,b)=>a.a-b.a)[0];
-  if(last.v>=8&&days<4){e='🔥';t=`Quel ${esc(last.label)} in ${esc(last.s.name)} 👀`;sub='Voto da ricordare. Continua così.'}
-  else if(worst){const x=needed(worst.s,6,1);e='🎯';t=`Focus su ${esc(worst.s.name)}`;sub=x<=10?`Con almeno ${fmtQ(x)} alla prossima torni sopra il 6`:'Servono un paio di buoni voti per risalire, ce la fai'}
-  else if(rows.length&&rows.every(r=>r.a>=6)){const best=rows.sort((a,b)=>b.a-a.a)[0];e='🙌';t='Tutto sufficiente';sub=`La tua materia migliore è ${esc(best.s.name)} con ${fmt(best.a)}`}
-  else return'';
-  return `<div class="msg"><div class="e">${e}</div><div><b>${t}</b><span>${sub}</span></div></div>`;
 }
 
 /* ===== orario ===== */
@@ -932,42 +1029,8 @@ function applyTheme(){
 mq.addEventListener&&mq.addEventListener('change',applyTheme);
 
 /* ===== traguardi e statistiche ===== */
-const allGrades=()=>S.subjects.flatMap(s=>s.grades.map(g=>({...g,s}))).sort((a,b)=>a.date.localeCompare(b.date));
+const allGrades=()=>S.subjects.flatMap(s=>s.grades.map(g=>({...g,s}))).sort(byT);
 function streak(){const a=allGrades();let n=0;for(let i=a.length-1;i>=0&&a[i].v>=6;i--)n++;return n}
-const BADGES=[
-  {id:'primo',e:'🎬',t:'Primo voto',ok:a=>a.length>0},
-  {id:'nove',e:'⭐',t:'Un 9 o più',ok:a=>a.some(g=>g.v>=9)},
-  {id:'dieci',e:'💯',t:'Il primo 10',ok:a=>a.some(g=>g.v>=10)},
-  {id:'serie5',e:'🔥',t:'5 sufficienze di fila',ok:()=>streak()>=5},
-  {id:'serie10',e:'☄️',t:'10 di fila',ok:()=>streak()>=10},
-  {id:'rimonta',e:'📈',t:'Rimonta sopra il 6',ok:()=>false},
-  {id:'tutte6',e:'🛡️',t:'Tutto sufficiente',ok:()=>{const r=S.subjects.map(s=>avg(s.grades)).filter(v=>v!=null);return r.length>=3&&r.every(v=>v>=6)}},
-  {id:'venti',e:'📚',t:'20 voti inseriti',ok:a=>a.length>=20},
-  {id:'otto',e:'🏆',t:'Media dell\'8',ok:a=>{if(a.length<5)return false;const r=S.subjects.map(s=>avg(s.grades)).filter(v=>v!=null);return r.reduce((x,y)=>x+y,0)/r.length>=8}}
-];
-function checkBadges(){
-  const a=allGrades(),nw=[];
-  BADGES.forEach(b=>{if(!S.badges.includes(b.id)&&b.ok(a)){S.badges.push(b.id);nw.push(b.id)}});
-  return nw;
-}
-function statsBlock(){
-  const gs=S.subjects.flatMap(s=>gradesOf(s).map(g=>({...g,s})));
-  if(!gs.length)return'';
-  const by=t=>avg(gs.filter(g=>g.type===t));
-  const rows=S.subjects.map(s=>({s,a:subjAvg(s)})).filter(r=>r.a!=null).sort((x,y)=>y.a-x.a);
-  const st=streak(),cnt=Array(10).fill(0);gs.forEach(g=>cnt[Math.min(9,Math.max(0,Math.round(g.v)-1))]++);
-  const mx=Math.max(...cnt,1);
-  let h=`<div class="sechead"><h2>Statistiche</h2></div><div class="sgrid">
-  <div class="sbox"><b>${st?st+' 🔥':'0'}</b><span>sufficienze di fila</span></div>
-  <div class="sbox"><b>${gs.length}</b><span>voti in questo periodo</span></div>
-  <div class="sbox"><b class="c-${tone(by('Scritto'))}">${fmt(by('Scritto'))}</b><span>media scritti</span></div>
-  <div class="sbox"><b class="c-${tone(by('Orale'))}">${fmt(by('Orale'))}</b><span>media orali</span></div>
-  ${rows.length>1?`<div class="sbox" style="grid-column:1/-1;display:flex;justify-content:space-between;gap:12px"><div style="min-width:0"><b>${emojiOf(rows[0].s.name)} ${esc(rows[0].s.name)}</b><span>la tua materia migliore</span></div><div style="min-width:0;text-align:right"><b>${emojiOf(rows[rows.length-1].s.name)} ${esc(rows[rows.length-1].s.name)}</b><span>quella da curare</span></div></div>`:''}
-  <div class="sbox" style="grid-column:1/-1"><span>Quanti voti per fascia</span><div class="dist">${cnt.map((c,i)=>`<div><i style="height:${c/mx*70}px;background:var(--${tone(i+1)});opacity:${c?1:.25}"></i><small>${i+1}</small></div>`).join('')}</div></div>
-  </div>`;
-  h+=`<div class="sechead"><h2>Traguardi</h2><span class="note" style="margin:0">${S.badges.length}/${BADGES.length}</span></div><div class="badges">${BADGES.slice().sort((a,b)=>S.badges.includes(b.id)-S.badges.includes(a.id)).map(b=>`<div class="bdg ${S.badges.includes(b.id)?'':'lock'}"><div class="be">${b.e}</div><b>${b.t}</b></div>`).join('')}</div>`;
-  return h;
-}
 function pagellaBlock(){
   const rows=S.subjects.map(s=>({s,a:subjAvg(s)})).filter(r=>r.a!=null);
   if(!rows.length)return'';
@@ -1061,13 +1124,304 @@ function openTest(id){
   $('#tDel').onclick=()=>confirmSheet('Eliminare la verifica?',`${esc(s.name)} del ${dateIt(t.date)}`,'Elimina',()=>{S.verifiche=S.verifiche.filter(v=>v.id!==t.id);save();closeSheet()},()=>openTest(id));
 }
 
+/* ===================== MASCOTTE ORBI ===================== */
+let obN=0;
+function orbi(mood,size,cls){
+  mood=mood||'happy';size=size||64;const u=++obN;
+  const ink='#1B1340';
+  const mouths={
+    happy:`<path d="M42 61 Q50 69 58 61" fill="none" stroke="${ink}" stroke-width="3.2" stroke-linecap="round"/>`,
+    ecstatic:`<path d="M39 58 Q50 75 61 58 Z" fill="${ink}"/><path d="M44 65.5 Q50 70.5 56 65.5 Q50 63.5 44 65.5Z" fill="#FF7A9A"/>`,
+    sad:`<path d="M42 66 Q50 59 58 66" fill="none" stroke="${ink}" stroke-width="3.2" stroke-linecap="round"/>`,
+    determined:`<path d="M43 63 Q50 66 57 62" fill="none" stroke="${ink}" stroke-width="3.2" stroke-linecap="round"/>`,
+    wow:`<ellipse cx="50" cy="64" rx="4.5" ry="5.5" fill="${ink}"/>`
+  };
+  const brows=mood==='determined'?`<path d="M32 38 L44 42" stroke="${ink}" stroke-width="3" stroke-linecap="round"/><path d="M68 38 L56 42" stroke="${ink}" stroke-width="3" stroke-linecap="round"/>`:mood==='sad'?`<path d="M33 42 L43 38" stroke="${ink}" stroke-width="2.6" stroke-linecap="round"/><path d="M67 42 L57 38" stroke="${ink}" stroke-width="2.6" stroke-linecap="round"/>`:'';
+  const eyes=mood==='ecstatic'
+    ?`<path d="M32 51 Q38 43 44 51" fill="none" stroke="${ink}" stroke-width="3.4" stroke-linecap="round"/><path d="M56 51 Q62 43 68 51" fill="none" stroke="${ink}" stroke-width="3.4" stroke-linecap="round"/>`
+    :`<g class="ob-eyes"><ellipse cx="38" cy="50" rx="6" ry="7.5" fill="${ink}"/><ellipse cx="62" cy="50" rx="6" ry="7.5" fill="${ink}"/><circle cx="40.2" cy="47" r="2.4" fill="#fff"/><circle cx="64.2" cy="47" r="2.4" fill="#fff"/></g>`;
+  const tear=mood==='sad'?`<path class="ob-tear" d="M31 57 Q28.5 62.5 31 64.5 Q33.5 62.5 31 57Z" fill="#7FD6FF"/>`:'';
+  return `<svg class="orbi ob-${mood} ${cls||''}" width="${size}" height="${size}" viewBox="0 0 100 100" aria-hidden="true">
+  <defs><radialGradient id="obg${u}" cx="36%" cy="30%" r="80%"><stop offset="0" stop-color="#C3B5FF"/><stop offset=".5" stop-color="#7C6CFF"/><stop offset="1" stop-color="#4436C9"/></radialGradient></defs>
+  <g class="ob-body">
+    <g transform="rotate(-10 50 71)"><path d="M6 71 A44 9 0 0 1 94 71" fill="none" stroke="#2BB58A" stroke-width="5" stroke-linecap="round"/></g>
+    <line x1="50" y1="21" x2="50" y2="10" stroke="#5B4BE0" stroke-width="3" stroke-linecap="round"/>
+    <circle class="ob-ant" cx="50" cy="8" r="4.5" fill="#FFD43B"/>
+    <circle cx="50" cy="50" r="30" fill="url(#obg${u})"/>
+    <ellipse cx="40" cy="33" rx="9" ry="5" fill="#fff" opacity=".22" transform="rotate(-25 40 33)"/>
+    <ellipse cx="29" cy="60" rx="5" ry="3" fill="#FF8FB1" opacity=".75"/><ellipse cx="71" cy="60" rx="5" ry="3" fill="#FF8FB1" opacity=".75"/>
+    ${brows}${eyes}${mouths[mood]||mouths.happy}${tear}
+    <g transform="rotate(-10 50 71)"><path d="M6 71 A44 9 0 0 0 94 71" fill="none" stroke="#3DDBA4" stroke-width="5" stroke-linecap="round"/></g>
+  </g></svg>`;
+}
+
+/* ===================== LIVELLI E XP ===================== */
+const LV_TITLES=[[1,'Cadetto'],[3,'Pilota'],[5,'Esploratore'],[8,'Capitano'],[11,'Comandante'],[15,'Ammiraglio'],[20,'Leggenda galattica']];
+function level(xp){let lv=1,need=60,acc=0;while(xp>=acc+need){acc+=need;lv++;need=60+lv*30}let t='';LV_TITLES.forEach(([n,s])=>{if(lv>=n)t=s});return{lv,cur:xp-acc,need,title:t}}
+function xpFor(v){return 10+(v>=6?5:0)+(v>=7?5:0)+(v>=8?5:0)+(v>=9?10:0)+(v>=10?15:0)}
+const RAR={comune:{n:'Comune',c:'#9AACD6',xp:20},raro:{n:'Raro',c:'#4CC9F0',xp:50},epico:{n:'Epico',c:'#B197FC',xp:100},leggendario:{n:'Leggendario',c:'#FFC145',xp:250}};
+const RORD=['comune','raro','epico','leggendario'];
+
+/* ===================== TRAGUARDI ===================== */
+function byT(x,y){return x.date.localeCompare(y.date)||(x.ts||0)-(y.ts||0)}
+function dowOf(d){return(new Date(d+'T12:00').getDay()+6)%7}
+function weekKey(d){const t=new Date(d+'T12:00');t.setDate(t.getDate()-dowOf(d));return t.toISOString().slice(0,10)}
+function runLen(g,f){let best=g.length?1:0,c=1;for(let i=1;i<g.length;i++){c=f(g[i-1],g[i])?c+1:1;if(c>best)best=c}return best}
+function bctx(ev){
+  const a=allGrades();
+  const subs=S.subjects.map(s=>({s,g:s.grades.slice().sort(byT),a:avg(s.grades)})).filter(x=>x.g.length);
+  const gen=subs.length?subs.reduce((t,x)=>t+x.a,0)/subs.length:null;
+  return{a,subs,gen,st:streak(),ev:ev||{}};
+}
+const BADGES=[
+ {id:'primo',e:'🎬',t:'Ciak, si parte',d:'Inserisci il tuo primo voto',r:'comune',ok:c=>c.a.length>=1},
+ {id:'sei',e:'🙂',t:'Salvo!',d:'Prendi almeno 6',r:'comune',ok:c=>c.a.some(g=>g.v>=6)},
+ {id:'collez',e:'🗂️',t:'Collezionista',d:'Voti in 5 materie diverse',r:'comune',p:c=>[c.subs.length,5]},
+ {id:'quaderno',e:'📒',t:'Quaderno pieno',d:'Inserisci 10 voti',r:'comune',p:c=>[c.a.length,10]},
+ {id:'parlantina',e:'🎤',t:'Parlantina',d:'Prendi 7 o più a un orale',r:'comune',ok:c=>c.a.some(g=>g.type==='Orale'&&g.v>=7)},
+ {id:'penna',e:'✍️',t:"Penna d'oro",d:'Prendi 8 o più a uno scritto',r:'comune',ok:c=>c.a.some(g=>g.type==='Scritto'&&g.v>=8)},
+ {id:'nove',e:'⭐',t:'Stellare',d:'Prendi 9 o più',r:'raro',ok:c=>c.a.some(g=>g.v>=9)},
+ {id:'fiamme',e:'🔥',t:'In fiamme',d:'5 sufficienze di fila',r:'raro',p:c=>[c.st,5]},
+ {id:'rimonta',e:'📈',t:'Rimonta',d:'Porta una materia da sotto a sopra il 6',r:'raro',ok:c=>!!c.ev.rimonta},
+ {id:'archivista',e:'📚',t:'Archivista',d:'Inserisci 20 voti',r:'raro',p:c=>[c.a.length,20]},
+ {id:'mezzo',e:'🍰',t:'Mezzo e mezzo',d:'Prendi un voto con il ½',r:'raro',ok:c=>c.a.some(g=>String(g.label).includes('½'))},
+ {id:'piu',e:'➕',t:'Più che bene',d:'Colleziona 5 voti con il +',r:'raro',p:c=>[c.a.filter(g=>String(g.label).includes('+')).length,5]},
+ {id:'lunedi',e:'😎',t:'Lunedì da leoni',d:'Prendi 8 o più di lunedì',r:'raro',ok:c=>c.a.some(g=>g.v>=8&&dowOf(g.date)===0)},
+ {id:'venerdi',e:'🎉',t:'Weekend meritato',d:'Prendi 8 o più di venerdì',r:'raro',ok:c=>c.a.some(g=>g.v>=8&&dowOf(g.date)===4)},
+ {id:'scala',e:'🪜',t:'Scala',d:'3 voti in salita di fila nella stessa materia',r:'raro',ok:c=>c.subs.some(x=>runLen(x.g,(p,q)=>q.v>p.v)>=3)},
+ {id:'tris',e:'🎯',t:'Tris',d:'3 voti uguali di fila nella stessa materia',r:'raro',ok:c=>c.subs.some(x=>runLen(x.g,(p,q)=>q.v===p.v)>=3)},
+ {id:'gufo',e:'🦉',t:'Gufo notturno',d:'Inserisci un voto tra mezzanotte e le 5',r:'raro',hid:1,ok:c=>!!c.ev.night},
+ {id:'seisei',e:'🎲',t:'Tris di sei',d:'Prendi tre 6 di fila',r:'raro',hid:1,ok:c=>runLen(c.a,(p,q)=>Math.round(p.v)===6&&Math.round(q.v)===6)>=3},
+ {id:'dieci',e:'💯',t:'Perfezione',d:'Prendi un 10',r:'epico',ok:c=>c.a.some(g=>g.v>=10)},
+ {id:'fenice',e:'🦅',t:'Fenice',d:'Dopo un voto sotto il 5, prendi 8 o più nella stessa materia',r:'epico',ok:c=>c.subs.some(x=>{let low=false;return x.g.some(g=>{if(low&&g.v>=8)return true;if(g.v<5)low=true;return false})})},
+ {id:'cometa',e:'☄️',t:'Cometa',d:'10 sufficienze di fila',r:'epico',p:c=>[c.st,10]},
+ {id:'scudo',e:'🛡️',t:'Scudo totale',d:'Tutte le materie sopra il 6, con almeno 4 materie',r:'epico',ok:c=>c.subs.length>=4&&c.subs.every(x=>x.a>=6)},
+ {id:'otto',e:'🏆',t:"Media dell'8",d:'Media generale da 8 in su, con almeno 8 voti',r:'epico',ok:c=>c.a.length>=8&&c.gen>=8},
+ {id:'equi',e:'⚖️',t:'Equilibrista',d:'Media di scritti e orali a meno di 0,25 di distanza, con almeno 3 voti per tipo',r:'epico',ok:c=>{const s=c.a.filter(g=>g.type==='Scritto'),o=c.a.filter(g=>g.type==='Orale');return s.length>=3&&o.length>=3&&Math.abs(avg(s)-avg(o))<0.25}},
+ {id:'settimana',e:'📅',t:"Settimana d'oro",d:'Tre voti da 7 in su nella stessa settimana',r:'epico',ok:c=>{const m={};c.a.filter(g=>g.v>=7).forEach(g=>{const k=weekKey(g.date);m[k]=(m[k]||0)+1});return Object.values(m).some(n=>n>=3)}},
+ {id:'arcobaleno',e:'🌈',t:'Arcobaleno',d:'Un 7 o più in 5 materie diverse',r:'epico',p:c=>[c.subs.filter(x=>x.g.some(g=>g.v>=7)).length,5]},
+ {id:'biblioteca',e:'🗄️',t:'Biblioteca',d:'Inserisci 50 voti',r:'epico',p:c=>[c.a.length,50]},
+ {id:'montagne',e:'🎢',t:'Montagne russe',d:'Un 10 e un 4 o meno nella stessa materia',r:'epico',hid:1,ok:c=>c.subs.some(x=>x.g.some(g=>g.v>=10)&&x.g.some(g=>g.v<=4))},
+ {id:'palindromo',e:'🔁',t:'Palindromo',d:'5 voti di fila che si leggono uguali anche al contrario, tipo 6 7 8 7 6',r:'epico',hid:1,ok:c=>{const v=c.a.map(g=>Math.round(g.v));for(let i=0;i+5<=v.length;i++){const w=v.slice(i,i+5);if(w.join()===w.slice().reverse().join()&&new Set(w).size>1)return true}return false}},
+ {id:'re',e:'👑',t:'Re dei 10',d:'Prendi tre 10',r:'leggendario',p:c=>[c.a.filter(g=>g.v>=10).length,3]},
+ {id:'galattico',e:'🌌',t:'Galattico',d:'Media generale da 9 in su, con almeno 10 voti',r:'leggendario',ok:c=>c.a.length>=10&&c.gen>=9},
+ {id:'iper',e:'🚀',t:'Iperspazio',d:'20 sufficienze di fila',r:'leggendario',p:c=>[c.st,20]},
+ {id:'diamante',e:'💎',t:'Diamante',d:"Tutte le materie sopra l'8, con almeno 4 materie",r:'leggendario',ok:c=>c.subs.length>=4&&c.subs.every(x=>x.a>=8)},
+ {id:'leggenda',e:'🏛️',t:'Leggenda',d:'Inserisci 100 voti',r:'leggendario',p:c=>[c.a.length,100]}
+];
+function bDone(b,c){if(b.ok)return!!b.ok(c);const p=b.p(c);return p[0]>=p[1]}
+function checkBadges(ev){
+  const c=bctx(ev),nw=[];S.bdates=S.bdates||{};
+  BADGES.forEach(b=>{if(!S.badges.includes(b.id)&&bDone(b,c)){S.badges.push(b.id);S.bdates[b.id]=today();S.xp=(S.xp||0)+RAR[b.r].xp;nw.push(b.id)}});
+  return nw;
+}
+function initProgress(){
+  const map={serie5:'fiamme',serie10:'cometa',tutte6:'scudo',venti:'archivista'};
+  S.badges=[...new Set((S.badges||[]).map(id=>map[id]||id))].filter(id=>BADGES.some(b=>b.id===id));
+  S.bdates=S.bdates||{};
+  if(S.xp==null){S.xp=allGrades().reduce((t,g)=>t+xpFor(g.v),0)+S.badges.reduce((t,id)=>t+RAR[BADGES.find(b=>b.id===id).r].xp,0)}
+}
+function medal(b,unlocked,size){
+  const col=RAR[b.r].c,hidden=b.hid&&!unlocked;
+  return `<div class="medal ${unlocked?'on':'off'} r-${b.r}" style="--rc:${col};width:${size}px;height:${size}px;font-size:${size*.46}px"><span>${unlocked?b.e:hidden?'❓':b.e}</span>${unlocked?'':'<i class="lk">🔒</i>'}</div>`;
+}
+function levelCard(){
+  const L=level(S.xp||0),got=S.badges.length;
+  return `<div class="lvcard"><div class="lvm">${orbi(L.lv>=5?'ecstatic':'happy',78)}</div><div class="lvi"><span class="lvk">Livello ${L.lv}</span><b>${L.title}</b>
+  <div class="xpbar"><i style="width:${L.cur/L.need*100}%"></i></div><span class="lvs">${L.cur} / ${L.need} XP al prossimo livello · 🏅 ${got}/${BADGES.length}</span></div></div>`;
+}
+function badgesGrid(){
+  const c=bctx();let h='';
+  RORD.forEach(r=>{
+    const list=BADGES.filter(b=>b.r===r),got=list.filter(b=>S.badges.includes(b.id)).length;
+    h+=`<div class="rhead"><span class="rdot" style="background:${RAR[r].c}"></span>${RAR[r].n}<small>${got}/${list.length}</small></div><div class="bgrid">`;
+    list.forEach(b=>{
+      const on=S.badges.includes(b.id),hidden=b.hid&&!on;let pr='';
+      if(!on&&b.p&&!hidden){const[x,m]=b.p(c);pr=`<div class="bprog"><i style="width:${Math.min(100,x/m*100)}%;background:${RAR[r].c}"></i></div>`}
+      h+=`<button class="btile press" data-badge="${b.id}">${medal(b,on,58)}<b>${hidden?'Segreto':b.t}</b>${pr}</button>`;
+    });
+    h+='</div>';
+  });
+  return h;
+}
+function openBadge(id){
+  const b=BADGES.find(x=>x.id===id);if(!b)return;
+  const on=S.badges.includes(id),hidden=b.hid&&!on,c=bctx(),R=RAR[b.r];
+  let foot='';
+  if(on)foot=`<p class="note" style="text-align:center">Sbloccato il ${S.bdates&&S.bdates[id]?dateIt(S.bdates[id]):'—'}</p>`;
+  else if(b.p&&!hidden){const[x,m]=b.p(c);foot=`<div class="bprog big"><i style="width:${Math.min(100,x/m*100)}%;background:${R.c}"></i></div><p class="note" style="text-align:center">${Math.min(x,m)} / ${m}</p>`}
+  openSheet(`<div class="bdet">${on?`<div class="rays" style="--rc:${R.c}"></div>`:''}${medal(b,on,112)}
+  <span class="rpill" style="--rc:${R.c}">${R.n} · +${R.xp} XP</span>
+  <h3>${hidden?'Traguardo segreto':esc(b.t)}</h3><p>${hidden?'Questo lo devi scoprire da solo 👀':esc(b.d)}</p>${foot}</div>`);
+}
+
+/* ===================== HOME ===================== */
+function dailyMsg(){
+  const all=allGrades();
+  if(!all.length)return `<div class="msg">${orbi('happy',52)}<div><b>Ciao, sono Orbi!</b><span>Inserisci un voto e iniziamo a fare punti insieme</span></div></div>`;
+  const rows=S.subjects.map(s=>({s,a:subjAvg(s)})).filter(r=>r.a!=null);
+  const last=all[all.length-1],days=(Date.now()-new Date(last.date+'T12:00'))/864e5;
+  const worst=rows.filter(r=>r.a<6).sort((a,b)=>a.a-b.a)[0],st=streak();
+  let m,t,sub;
+  if(last.v>=8&&days<4){m='ecstatic';t=`Quel ${esc(last.label)} in ${esc(last.s.name)}!`;sub='Sto ancora festeggiando 🎉'}
+  else if(worst){const x=needed(worst.s,6,1);m='determined';t=`Focus su ${esc(worst.s.name)}`;sub=x<=10?`Con almeno ${fmtQ(x)} alla prossima torni sopra il 6. Ce la facciamo!`:'Servono un paio di buoni voti, ma ce la facciamo'}
+  else if(st>=3){m='happy';t=`${st} sufficienze di fila 🔥`;sub='Non spezzare la serie!'}
+  else if(rows.length&&rows.every(r=>r.a>=6)){m='happy';t='Tutto sufficiente';sub='Orbi approva. Continua così!'}
+  else return'';
+  return `<div class="msg">${orbi(m,52)}<div><b>${t}</b><span>${sub}</span></div></div>`;
+}
+function statsBlock(){
+  const gs=S.subjects.flatMap(s=>gradesOf(s).map(g=>({...g,s})));
+  if(!gs.length)return'';
+  const by=t=>avg(gs.filter(g=>g.type===t));
+  const rows=S.subjects.map(s=>({s,a:subjAvg(s)})).filter(r=>r.a!=null).sort((x,y)=>y.a-x.a);
+  const st=streak(),cnt=Array(10).fill(0);gs.forEach(g=>cnt[Math.min(9,Math.max(0,Math.round(g.v)-1))]++);
+  const mx=Math.max(...cnt,1),L=level(S.xp||0);
+  let h=`<div class="sechead"><h2>Il tuo viaggio</h2><button data-goto="obiettivi">Traguardi</button></div>
+  <button class="lvmini press" data-goto="obiettivi"><span class="lvn">${L.lv}</span><div><b>${L.title}</b><div class="xpbar"><i style="width:${L.cur/L.need*100}%"></i></div></div><span class="lvb">🏅 ${S.badges.length}</span></button>
+  <div class="sgrid" style="margin-top:10px">
+  <div class="sbox"><b>${st?st+' 🔥':'0'}</b><span>sufficienze di fila</span></div>
+  <div class="sbox"><b>${gs.length}</b><span>voti in questo periodo</span></div>
+  <div class="sbox"><b class="c-${tone(by('Scritto'))}">${fmt(by('Scritto'))}</b><span>media scritti</span></div>
+  <div class="sbox"><b class="c-${tone(by('Orale'))}">${fmt(by('Orale'))}</b><span>media orali</span></div>
+  ${rows.length>1?`<div class="sbox" style="grid-column:1/-1;display:flex;justify-content:space-between;gap:12px"><div style="min-width:0"><b>${emojiOf(rows[0].s.name)} ${esc(rows[0].s.name)}</b><span>la tua materia migliore</span></div><div style="min-width:0;text-align:right"><b>${emojiOf(rows[rows.length-1].s.name)} ${esc(rows[rows.length-1].s.name)}</b><span>quella da curare</span></div></div>`:''}
+  <div class="sbox" style="grid-column:1/-1"><span>Quanti voti per fascia</span><div class="dist">${cnt.map((c,i)=>`<div><i style="--h:${c/mx*70}px;background:var(--${tone(i+1)});opacity:${c?1:.25}"></i><small>${i+1}</small></div>`).join('')}</div></div>
+  </div>`;
+  return h;
+}
+function viewObiettivi(){
+  return levelCard()+`<div class="sechead"><h2>Traguardi</h2><span class="note" style="margin:0">${S.badges.length}/${BADGES.length}</span></div>`+badgesGrid()+`<div class="sechead" style="margin-top:34px"><h2>Che voto mi serve?</h2></div>`+viewObiettiviOld().replace('style="margin-top:16px"','');
+}
+
+/* ===================== ANELLO ===================== */
+function ring(val){
+  const C=2*Math.PI*54,p=val==null?0:Math.max(0,Math.min(1,val/10)),t=tone(val),g=GR[t]||GR.none;
+  return `<div class="ring"><svg viewBox="0 0 128 128" overflow="visible"><defs><linearGradient id="rg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${g[0]}"/><stop offset="1" stop-color="${g[1]}"/></linearGradient></defs>
+  <circle cx="64" cy="64" r="54" fill="none" stroke="var(--track)" stroke-width="11"/>
+  <circle class="ra" cx="64" cy="64" r="54" fill="none" stroke="url(#rg)" stroke-width="26" stroke-linecap="round" opacity=".10" stroke-dasharray="0 ${C}" data-to="${C*p} ${C}"/>
+  <circle class="ra" cx="64" cy="64" r="54" fill="none" stroke="url(#rg)" stroke-width="18" stroke-linecap="round" opacity=".16" stroke-dasharray="0 ${C}" data-to="${C*p} ${C}"/>
+  <circle class="ra" cx="64" cy="64" r="54" fill="none" stroke="url(#rg)" stroke-width="11" stroke-linecap="round" stroke-dasharray="0 ${C}" data-to="${C*p} ${C}"/>
+  </svg><div class="v"><b data-count="${val==null?'':val}">${val==null?'–':'0'}</b><span>media</span></div></div>`;
+}
+function afterRender(root){
+  const lp=$('#lvpill');if(lp){const L=level(S.xp||0);lp.innerHTML=`⚡ Liv. ${L.lv}`}
+  root.querySelectorAll('[data-badge]').forEach(b=>b.onclick=()=>openBadge(b.dataset.badge));
+  root.querySelectorAll('[data-goto="obiettivi"]').forEach(b=>b.onclick=()=>{tab='obiettivi';render();scrollTo({top:0})});
+  requestAnimationFrame(()=>requestAnimationFrame(()=>{
+    root.querySelectorAll('.ra').forEach(c=>c.style.strokeDasharray=c.dataset.to);
+    root.querySelectorAll('.dist i').forEach(i=>i.style.height=i.style.getPropertyValue('--h'));
+    root.querySelectorAll('.xpbar i,.bprog i').forEach(i=>{const w=i.style.width;i.style.width='0';requestAnimationFrame(()=>i.style.width=w)});
+  }));
+  root.querySelectorAll('[data-count]').forEach(el=>{const to=parseFloat(el.dataset.count);if(isNaN(to))return;countUp(el,to,900,v=>fmt(Math.round(v*100)/100))});
+}
+function countUp(el,to,ms,f){const t0=performance.now();const step=t=>{const k=Math.min(1,(t-t0)/ms),e=1-Math.pow(1-k,3);el.textContent=f(to*e);if(k<1)requestAnimationFrame(step);else el.textContent=f(to)};requestAnimationFrame(step)}
+
+/* ===================== FRASI SEMPRE DIVERSE ===================== */
+const PHR={
+ top:{t:['Mostruoso 🔥','Livello leggenda','Che spacco 🚀','Inarrestabile','Fuori scala','Applausi 👏','Da incorniciare','Questo è oro','Missione compiuta','Orbi è senza parole','Spaziale ✨','Nessuno ti ferma','Che classe','Boom 💥','Pazzesco'],
+  s:['Questo voto va incorniciato.','Pochi prendono voti così.','Il prof se lo ricorderà.',"Hai alzato l'asticella per tutti.",'Screenshot e manda al gruppo.','Orbi sta facendo le capriole.','Stai giocando a un altro livello.','La media sta decollando.','Dillo a casa, te lo meriti.','Sei in orbita alta.','Ricordatelo la prossima volta che sei in ansia.','{m} ormai è roba tua.','Un {v} in {m}. Niente da aggiungere.','Le stelle ti invidiano.',"Ok, adesso ti puoi vantare un po'."]},
+ high:{t:['Grande! 💪','Bellissimo voto','Ottimo ✨','Così si fa','Che bel colpo','Bravissimo','Top','Si vola','Gran voto','Bel lavoro','Ci siamo','Questo sì','Super','Molto bene','Che soddisfazione'],
+  s:['Il lavoro si vede.','Continua su questa strada.','La media ringrazia.',"Studiare paga, chi l'avrebbe detto.",'Un 8 non arriva per caso.','{m} sta andando alla grande.','Orbi approva con tutta l\'antenna.','Ancora un passo e sei da 9.','Questo voto alza il morale.','Goditelo, te lo sei guadagnato.','Altro mattoncino per la pagella.','Il prof ha notato.','Sei sulla rampa di lancio.','Così {m} diventa la tua materia.','Bello vedere un {v} qui.']},
+ ok:{t:['Portato a casa ✅','Bene così','Avanti così 👍','Sufficienza presa','Ok, ci siamo','Fatto','Promosso','Tutto sotto controllo','Si va avanti','Niente male','Missione riuscita','Buono',"Respira, è andata",'Un passo avanti','Salvo'],
+  s:['Sufficiente è sufficiente.','Un passo alla volta.','Ogni voto conta.','Meglio di quello che pensavi, vero?','La strada è quella giusta.','Il prossimo può essere ancora meglio.','Orbi annuisce soddisfatto.','Hai messo un altro mattone.','Non sarà un 10, ma è tuo.','{m}: pratica archiviata.',"Con un po' di spinta si arriva all'8.",'Tranquillo, la media regge.','Niente drammi oggi.','Così si costruisce la pagella.','Un {v} che fa il suo lavoro.']},
+ near:{t:['Ci sei quasi','Manca poco','Per un pelo','Quasi','Non è finita','Si recupera','Mezzo passo','Dai che ci sei','Sfiorato','Vicinissimo','Tieni duro','Respira','Coraggio','Alla prossima','Quasi fatta'],
+  s:['Al prossimo lo sistemi.','Un piccolo sforzo e sei sopra.','Mezzo punto non è niente.','Hai capito dove sbagliare, è già qualcosa.','{m} si può ancora girare.','Orbi crede in te.','Il 6 è proprio lì.','Ripassa i punti deboli e torna più forte.','Un 5 oggi, un 7 domani.','Non mollare adesso.','Ogni voto si può bilanciare.','Chiedi una mano su {m}, funziona.',"La media si muove, anche verso l'alto.",'È solo un voto, non un verdetto.','Sei più vicino di quello che sembra.']},
+ low:{t:['Capita a tutti','Testa alta 🫶','Ok, ripartiamo','Giornata no','Si riparte','Non è la fine','Respira','Ci sta','Pausa e poi via','Tranquillo','Succede','Reset','Rialzati','Ricominciamo','Va bene così'],
+  s:['Un voto non ti definisce. Si recupera.','Il prossimo è tuo.','Adesso sai cosa ripassare.','Anche i migliori hanno preso un {v}.','Orbi ti fa compagnia.','Le rimonte più belle partono da qui.','{m} ti deve una rivincita.','Prenditi un attimo, poi si riparte.',"Studiare un po' alla volta funziona più del panico.",'La media si sistema con i prossimi voti.','Non ci pensare troppo stasera.','Chiedi al prof dove hai sbagliato, aiuta davvero.','Domani è un altro giorno.','Ci sono ancora un sacco di voti per rimediare.','Sbagliare oggi vuol dire capire domani.']}
+};
+function freshPick(pool){
+  S.recentMsg=S.recentMsg||[];
+  let c=pool.filter(x=>!S.recentMsg.includes(x));
+  if(!c.length){const ord=pool.slice().sort((a,b)=>S.recentMsg.indexOf(a)-S.recentMsg.indexOf(b));c=[ord[0]]}
+  const x=c[Math.floor(Math.random()*c.length)];
+  S.recentMsg.push(x);if(S.recentMsg.length>80)S.recentMsg=S.recentMsg.slice(-80);
+  return x;
+}
+function freshMsg(tier,s,v,label){
+  const g=s.grades[s.grades.length-1]||{},st=streak(),now=new Date(),d=g.date?dowOf(g.date):-1;
+  const extra=[];
+  if(v>=6&&st>=3)extra.push('Sono {n} sufficienze di fila 🔥','Serie da {n} e non si ferma.');
+  if(v>=6&&d===0)extra.push("Iniziare la settimana così è un'altra cosa.");
+  if(v>=6&&d===4)extra.push('Il weekend adesso ha un sapore migliore.');
+  if(now.getHours()>=22||now.getHours()<5)extra.push("Anche a quest'ora pensi ai voti? Rispetto.");
+  if(g.type==='Orale'&&v>=7)extra.push('Hai parlato come un prof.');
+  if(g.type==='Scritto'&&v>=8)extra.push('Penna magica.');
+  if(s.grades.length===1)extra.push(v>=6?'Primo voto in {m}: si parte bene.':"Primo voto in {m}, c'è tutto il tempo per migliorare.");
+  const t=freshPick(PHR[tier].t),sub=freshPick(PHR[tier].s.concat(extra,extra));
+  const fill=x=>x.replace(/\{m\}/g,esc(s.name)).replace(/\{v\}/g,esc(label)).replace(/\{n\}/g,st);
+  save();
+  return[fill(t),fill(sub)];
+}
+
+/* ===================== CELEBRAZIONI ===================== */
+let celQ=[],celT;
+function showCel(){
+  const cel=$('#cel'),card=$('#celcard');clearTimeout(celT);
+  const sc=celQ.shift();if(!sc){cel.classList.remove('on');return}
+  card.className='celcard '+(sc.cls||'');card.innerHTML=sc.html;void card.offsetWidth;card.classList.add('in');cel.classList.add('on');
+  if(sc.fx)sc.fx(card);celT=setTimeout(showCel,sc.ms||3200);
+}
+function hideCel(){showCel()}
+function celebrate(v,label,s,before,after,per,info){
+  info=info||{};const nb=info.nb||[],xp0=info.xp0||0,gain=info.gain||0;
+  const tier=v>=9?'top':v>=8?'high':v>=6?'ok':v>=5?'near':'low';
+  const mood=v>=8?'ecstatic':v>=6?'happy':v>=5?'determined':'sad';
+  const [t,sub]=freshMsg(tier,s,v,label);
+  let ctx='';
+  if(before!=null&&before<6&&after>=6)ctx=`🎉 Hai portato ${esc(s.name)} sopra il 6!`;
+  else if(before!=null&&before>=6&&after<6){const x=needed1(s,per);ctx=x<=10?`Per tornare a 6 ti serve almeno ${fmtQ(x)} nella prossima`:`Media ${fmt(after)}, servono un paio di voti per risalire`;}
+  else if(before!=null&&after>before+0.005)ctx=`Media di ${esc(s.name)}: ${fmt(before)} → ${fmt(after)} 📈`;
+  else if(before!=null&&after<before-0.005)ctx=`Media di ${esc(s.name)}: ${fmt(before)} → ${fmt(after)}`;
+  else ctx=`Primo voto in ${esc(s.name)}`;
+  const L0=level(xp0),L1=level(xp0+gain),up=L1.lv>L0.lv;
+  celQ=[{cls:v<6?'low':'',ms:3600,html:`<div class="cmas">${orbi(mood,104,'pop')}</div><div class="gv t-${tone(v)}">${esc(label)}</div><h4>${t}</h4><p>${sub}</p><div class="ctx">${ctx}</div>
+    <div class="xprow"><span class="xpchip">+<b>0</b> XP</span><div class="xpbar"><i style="width:${L0.cur/L0.need*100}%"></i></div><span class="xplv">Liv. ${L0.lv}</span></div><div class="tap">Tocca per continuare</div>`,
+    fx:card=>{
+      buzz(v>=8?[30,60,30,60,60]:v>=6?[30]:[15]);
+      if(v>=6&&!matchMedia('(prefers-reduced-motion: reduce)').matches)confetti(v>=8?160:50,v>=9);
+      const chip=card.querySelector('.xpchip b'),bar=card.querySelector('.xpbar i');setTimeout(()=>{if(!chip||!chip.isConnected)return;countUp(chip,gain,700,x=>Math.round(x));bar.style.width=(up?100:L1.cur/L1.need*100)+'%'},450);
+    }}];
+  if(up)celQ.push({cls:'lvup',ms:3400,html:`<div class="rays" style="--rc:#7C6CFF"></div><div class="cmas">${orbi('ecstatic',96,'pop')}</div><div class="lvbig">${L1.lv}</div><h4>Livello ${L1.lv}!</h4><p>Ora sei <b style="color:var(--text)">${L1.title}</b></p><div class="tap">Tocca per continuare</div>`,
+    fx:()=>{buzz([40,40,40,40,120]);confetti(180,true)}});
+  nb.forEach(id=>{const b=BADGES.find(x=>x.id===id),R=RAR[b.r];
+    celQ.push({cls:'bunl',ms:3400,html:`<div class="rays" style="--rc:${R.c}"></div><div class="bpop">${medal(b,true,104)}</div><span class="rpill" style="--rc:${R.c}">${R.n} · +${R.xp} XP</span><h4>${esc(b.t)}</h4><p>${esc(b.d)}</p><div class="tap">Traguardo sbloccato</div>`,
+      fx:()=>{buzz([20,40,20,40,20,90]);confetti(b.r==='leggendario'?220:130,b.r==='leggendario'||b.r==='epico')}})});
+  showCel();
+}
+
+/* ===================== INTRO ===================== */
+function playIntro(){
+  const el=$('#intro');if(!el)return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.remove();return}
+  let full=true;try{const k='pagella-intro',d=today();full=localStorage.getItem(k)!==d;localStorage.setItem(k,d)}catch(e){}
+  const C=2*Math.PI*60,len=C*285/360;
+  let stars='';if(full)for(let i=0;i<54;i++)stars+=`<i style="--a:${Math.random()*360}deg;--dl:${(Math.random()*.55).toFixed(2)}s;--s:${(Math.random()*.8+.5).toFixed(2)}"></i>`;
+  el.innerHTML=`<div class="warp">${stars}</div><div class="scene ${full?'full':'quick'}">
+    <img class="iicon" src="icon-512.png" alt="">
+    <svg class="orb" viewBox="0 0 160 160" overflow="visible"><defs><linearGradient id="ig" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#3DDBA4"/><stop offset=".5" stop-color="#4CC9F0"/><stop offset="1" stop-color="#7C6CFF"/></linearGradient></defs>
+      <circle class="itrack" cx="80" cy="80" r="60" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="14"/>
+      <circle class="iarc" cx="80" cy="80" r="60" fill="none" stroke="url(#ig)" stroke-width="34" stroke-linecap="round" opacity=".12" stroke-dasharray="0 ${C}" transform="rotate(-90 80 80)"/>
+      <circle class="iarc" cx="80" cy="80" r="60" fill="none" stroke="url(#ig)" stroke-width="14" stroke-linecap="round" stroke-dasharray="0 ${C}" transform="rotate(-90 80 80)"/>
+      <g class="iplanet"><circle cx="80" cy="20" r="15" fill="#fff" opacity=".18"/><circle cx="80" cy="20" r="9.5" fill="#fff"/></g>
+      <path class="ispark" d="M80 60 L84.8 75.2 L100 80 L84.8 84.8 L80 100 L75.2 84.8 L60 80 L75.2 75.2Z" fill="#fff"/>
+    </svg>
+    ${full?`<div class="iword">${'Pagella'.split('').map((ch,i)=>`<span style="--i:${i}">${ch}</span>`).join('')}</div><div class="itag">i tuoi voti, in orbita</div>`:''}
+  </div>`;
+  const arcs=el.querySelectorAll('.iarc'),pl=el.querySelector('.iplanet'),d0=full?300:100,dd=full?1000:550,t0=performance.now();
+  const ease=k=>k<.5?4*k*k*k:1-Math.pow(-2*k+2,3)/2;
+  const tick=t=>{const k=Math.max(0,Math.min(1,(t-t0-d0)/dd)),e=ease(k);arcs.forEach(c=>c.style.strokeDasharray=`${len*e} ${C}`);pl.setAttribute('transform',`rotate(${285*e} 80 80)`);pl.style.opacity=t-t0>d0?1:0;if(k<1&&!el._done)requestAnimationFrame(tick)};
+  requestAnimationFrame(tick);
+  const end=()=>{if(el._done)return;el._done=1;el.classList.add('out');render();setTimeout(()=>el.remove(),700)};
+  el.onclick=end;setTimeout(end,full?2500:1000);
+}
+
 /* ===== intro ===== */
-function playIntro(){const el=$('#intro');const done=()=>{el.classList.add('out');setTimeout(()=>el.remove(),600)};if(matchMedia('(prefers-reduced-motion: reduce)').matches){el.remove();return}setTimeout(done,950)}
 
 document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{if(tab===b.dataset.tab)return;tab=b.dataset.tab;render();window.scrollTo({top:0})});
 S.verifiche=S.verifiche||[];S.badges=S.badges||[];S.theme=S.theme||{mode:'auto',accent:'blu'};
-applyTheme();checkBadges();
+applyTheme();initProgress();checkBadges();
 render();playIntro();
+$('#lvpill').onclick=()=>{tab='obiettivi';render();scrollTo({top:0})};
 </script>
 <script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));</script>
 </body>
