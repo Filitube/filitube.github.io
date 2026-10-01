@@ -1,8 +1,0 @@
-[{
-  "relation": ["delegate_permission/common.handle_all_urls"],
-  "target": {
-    "namespace": "android_app",
-    "package_name": "io.github.filitube.twa",
-    "sha256_cert_fingerprints": ["A1:8E:62:79:F0:CD:61:87:4A:BE:0F:AB:B0:E6:25:B0:D2:09:1F:5B:FA:95:75:BB:72:B0:03:66:8B:17:FC:7C"]
-  }
-}]
