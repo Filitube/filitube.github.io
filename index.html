@@ -606,6 +606,10 @@ nav.tabs button{justify-content:center;padding:0 2px}
 .olive{position:absolute;top:4px;right:4px;font-style:normal;font-size:8.5px;font-weight:800;text-transform:uppercase;background:var(--g1);color:#fff;border-radius:6px;padding:1px 4px;animation:antg 1.6s ease-in-out infinite}
 .minibtns button{box-shadow:0 3px 0 rgba(0,0,0,.3),var(--shadow);background:var(--surface)}
 .minibtns button.press:active{transform:translateY(2px)}
+/* comportamento da app */
+html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;overscroll-behavior-y:none}
+input,textarea{-webkit-user-select:text;user-select:text;-webkit-touch-callout:default}
+img,svg{-webkit-user-drag:none;user-drag:none}
 </style>
 </head>
 <body>
@@ -1716,6 +1720,8 @@ document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>{if(tab===
 S.verifiche=S.verifiche||[];S.badges=S.badges||[];S.theme=S.theme||{mode:'auto',accent:'blu'};
 applyTheme();initProgress();S.days=S.days||[];if(!S.days.includes(today())){S.days.push(today());S.days=S.days.slice(-400)}
 let bootB=[];if(!S.v6){checkBadges();S.v6=1}else bootB=checkBadges();save();
+document.addEventListener('contextmenu',e=>{if(!e.target.closest('input,textarea'))e.preventDefault()});
+document.addEventListener('dragstart',e=>{if(!e.target.closest('input,textarea'))e.preventDefault()});
 render();playIntro();if(bootB.length)setTimeout(()=>showBadges(bootB),2600);
 $('#lvpill').onclick=()=>{tab='obiettivi';render();scrollTo({top:0})};
 </script>
