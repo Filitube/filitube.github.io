@@ -2517,16 +2517,18 @@ function goTab(t){
 document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>goTab(b.dataset.tab));
 function tabGo(d){const i=TABS.indexOf(tab)+d;if(i<0||i>=TABS.length)return;goTab(TABS[i])}
 let exitOpen=false;
-document.addEventListener('pointerdown',()=>{if(!history.state)try{history.pushState({layer:'root'},'')}catch(e){}},{capture:true,passive:true});
+let leaving=false;
+document.addEventListener('pointerdown',()=>{const st=history.state;if(st&&st.layer&&st.layer!=='root')return;let d=st&&st.layer==='root'?(st.d||1):0;try{while(d<4){d++;history.pushState({layer:'root',d},'')}}catch(e){}},{capture:true,passive:true});
 function askExit(){
-  openSheet(`<div class="exitq">${orbi('sad',96)}<h3>Vuoi già uscire?</h3><p>Orbi ti aspetta qui per il prossimo voto.</p></div><div class="row"><button class="btn soft press" id="exGo">Esci</button><button class="btn press" id="exStay">Resta</button></div>`);
+  openSheet(`<div class="exitq">${orbi('sad',96)}<h3>Vuoi uscire da Pagella?</h3><p>Puoi uscire solo da qui, così non la chiudi per sbaglio.</p></div><div class="row"><button class="btn soft press" id="exGo">Esci</button><button class="btn press" id="exStay">Resta</button></div>`);
   exitOpen=true;
-  $('#exStay').onclick=()=>{exitOpen=false;realCloseSheet();try{history.replaceState({layer:'root'},'')}catch(e){}};
-  $('#exGo').onclick=()=>{exitOpen=false;realCloseSheet();skipPop+=2;history.go(-2)};
+  $('#exStay').onclick=()=>closeSheet();
+  $('#exGo').onclick=()=>{exitOpen=false;leaving=true;realCloseSheet();history.back()};
 }
 window.addEventListener('popstate',()=>{
+  if(leaving){history.back();return}
   if(skipPop>0){skipPop--;return}
-  if(exitOpen){exitOpen=false;realCloseSheet();skipPop++;history.back();return}
+  if(exitOpen){exitOpen=false;realCloseSheet();return}
   if($('#cel').classList.contains('on')){celQ=[];$('#cel').classList.remove('on');return}
   const w=document.querySelector('.wrapped');if(w){w.classList.remove('on');setTimeout(()=>w.remove(),350);return}
   if($('#sheet').classList.contains('on')){realCloseSheet();return}
