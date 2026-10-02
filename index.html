@@ -808,6 +808,9 @@ nav.tabs button{position:relative;z-index:1;transition:color .25s}
 nav.tabs button[aria-selected="true"]{background:transparent!important}
 nav.tabs button svg{transition:transform .35s cubic-bezier(.3,1.6,.5,1),color .25s}
 nav.tabs button[aria-selected="true"] svg{transform:translateY(-1px) scale(1.08)}
+.exitq{display:flex;flex-direction:column;align-items:center;text-align:center;padding:10px 0 0}
+.exitq h3{position:static!important;margin:10px 0 4px!important;padding:0!important;background:none!important;font-size:24px}
+.exitq p{margin:0;color:var(--muted)}
 </style>
 </head>
 <body>
@@ -2486,7 +2489,7 @@ function openSheet(html,keepScroll){
   else sh.scrollTop=keepScroll?top:0;
 }
 function realCloseSheet(){const sh=$('#sheet');sh.classList.remove('on');sh.style.transform='';$('#backdrop').classList.remove('on');render()}
-function closeSheet(){realCloseSheet();popLayerSilently('sheet')}
+function closeSheet(){exitOpen=false;realCloseSheet();popLayerSilently('sheet')}
 function showCel(){
   const cel=$('#cel'),card=$('#celcard');clearTimeout(celT);
   const sc=celQ.shift();
@@ -2513,12 +2516,22 @@ function goTab(t){
 }
 document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>goTab(b.dataset.tab));
 function tabGo(d){const i=TABS.indexOf(tab)+d;if(i<0||i>=TABS.length)return;goTab(TABS[i])}
+let exitOpen=false;
+document.addEventListener('pointerdown',()=>{if(!history.state)try{history.pushState({layer:'root'},'')}catch(e){}},{capture:true,passive:true});
+function askExit(){
+  openSheet(`<div class="exitq">${orbi('sad',96)}<h3>Vuoi già uscire?</h3><p>Orbi ti aspetta qui per il prossimo voto.</p></div><div class="row"><button class="btn soft press" id="exGo">Esci</button><button class="btn press" id="exStay">Resta</button></div>`);
+  exitOpen=true;
+  $('#exStay').onclick=()=>{exitOpen=false;realCloseSheet();try{history.replaceState({layer:'root'},'')}catch(e){}};
+  $('#exGo').onclick=()=>{exitOpen=false;realCloseSheet();skipPop+=2;history.go(-2)};
+}
 window.addEventListener('popstate',()=>{
   if(skipPop>0){skipPop--;return}
+  if(exitOpen){exitOpen=false;realCloseSheet();skipPop++;history.back();return}
   if($('#cel').classList.contains('on')){celQ=[];$('#cel').classList.remove('on');return}
   const w=document.querySelector('.wrapped');if(w){w.classList.remove('on');setTimeout(()=>w.remove(),350);return}
   if($('#sheet').classList.contains('on')){realCloseSheet();return}
   if(tab!=='voti'){tab='voti';render();window.scrollTo({top:0});return}
+  askExit();
 });
 
 /* ---------- indicatore scheda che scorre ---------- */
