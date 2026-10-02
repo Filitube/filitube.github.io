@@ -705,6 +705,37 @@ html,body,.sheet,*{scrollbar-width:none}
 .today{margin:0 -18px;padding:2px 18px 8px;scroll-padding:0 18px;scroll-snap-type:x proximity}
 .today .lez{scroll-snap-align:start}
 .wrap{will-change:auto}
+/* ================= v8: pulsanti 3D più "schiacciosi" ================= */
+.btn,.keypad button,.mods button,.chip,.fab,.minibtns button,.step button,.wbtn,.tbtn,.lvpill,.flpill{transition:transform .38s cubic-bezier(.3,2,.45,1),box-shadow .3s cubic-bezier(.3,2,.45,1),filter .2s}
+.btn{box-shadow:0 6px 0 color-mix(in srgb,var(--g2) 50%,#000),0 14px 26px -12px var(--g1)}
+.btn.press:active{transform:translateY(6px) scale(.985,.95);box-shadow:0 0 0 color-mix(in srgb,var(--g2) 50%,#000),0 4px 10px -8px var(--g1);filter:brightness(1.12);transition-duration:.06s}
+.btn.soft{box-shadow:0 5px 0 rgba(0,0,0,.4),0 1px 0 var(--hl) inset}
+.btn.soft.press:active{transform:translateY(5px) scale(.985,.95);box-shadow:0 0 0 rgba(0,0,0,.4);filter:brightness(1.15);transition-duration:.06s}
+.btn.danger{box-shadow:0 5px 0 color-mix(in srgb,var(--red) 32%,#000)}
+.btn.danger.press:active{transform:translateY(5px) scale(.985,.95);box-shadow:0 0 0 #000;transition-duration:.06s}
+.fab{box-shadow:0 7px 0 color-mix(in srgb,var(--g2) 50%,#000),0 18px 34px -10px var(--g1)}
+.fab.press:active{transform:translateY(7px) scale(.94,.88);box-shadow:0 0 0 color-mix(in srgb,var(--g2) 50%,#000),0 6px 14px -8px var(--g1);filter:brightness(1.15);transition-duration:.06s}
+.fab svg{transition:transform .45s cubic-bezier(.3,2,.45,1)}
+.fab.press:active svg{transform:rotate(90deg) scale(.85);transition-duration:.12s}
+.keypad button{box-shadow:0 5px 0 rgba(0,0,0,.42),0 1px 0 var(--hl) inset}
+.keypad button.press:active{transform:translateY(5px) scale(.93,.88);box-shadow:0 0 0 rgba(0,0,0,.42);filter:brightness(1.25);transition-duration:.05s}
+.keypad button[aria-pressed="true"]{box-shadow:0 5px 0 color-mix(in srgb,var(--g2) 50%,#000)}
+.keypad button[aria-pressed="true"].press:active{box-shadow:0 0 0 #000}
+.mods button{box-shadow:0 4px 0 rgba(0,0,0,.4)}
+.mods button.press:active{transform:translateY(4px) scale(.94,.88);box-shadow:0 0 0 #000;filter:brightness(1.2);transition-duration:.05s}
+.chip{box-shadow:0 4px 0 rgba(0,0,0,.35)}
+.chip.press:active{transform:translateY(4px) scale(.95,.9);box-shadow:0 0 0 #000;transition-duration:.05s}
+.step button:active{transform:scale(.8);transition-duration:.05s}
+.minibtns button.press:active{transform:translateY(3px) scale(.95,.9);transition-duration:.05s}
+/* voti speciali */
+.mini.nmg{opacity:.6;box-shadow:inset 0 0 0 1.5px currentColor;background:transparent}
+.keypad.dim,.mods.dim{opacity:.4}
+.advl{display:flex;align-items:baseline;gap:8px;margin:18px 2px 0;font:inherit;font-weight:700;font-size:14px;color:var(--text)}
+.advl small{font-weight:500;color:var(--muted);font-size:12px}
+.adv{margin-top:2px}
+.infield{position:relative;margin-top:8px}
+.infield span{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--muted);font-weight:700}
+#gw button{padding:8px 0;font-size:13px}
 </style>
 </head>
 <body>
@@ -846,7 +877,7 @@ function viewVoti(){
   h+='<div class="list">'+S.subjects.map(s=>{
     const gs=gradesOf(s),a=avg(gs),last=gs.slice(-5);
     return `<button class="subj press" data-open="${s.id}"><div class="ico" style="${icoStyle(s)}">${emojiOf(s.name)}</div>
-    <div><div class="n">${esc(s.name)}</div>${last.length?`<div class="lastg">${last.map(x=>`<span class="mini t-${tone(x.v)}">${esc(x.label)}</span>`).join('')}</div>`:`<div class="none">Nessun voto</div>`}</div>
+    <div><div class="n">${esc(s.name)}</div>${last.length?`<div class="lastg">${last.map(x=>`<span class="mini t-${tone(x.v)} ${x.nm?'nmg':''}">${esc(x.label)}</span>`).join('')}</div>`:`<div class="none">Nessun voto</div>`}</div>
     <div class="avg t-${tone(a)}">${fmt(a)}</div></button>`}).join('')+'</div>';
   if(!count)h+=`<p class="note" style="text-align:center;margin-top:16px">Tocca + in basso per inserire il primo voto</p>`;
   else h+=statsBlock();
@@ -939,7 +970,7 @@ function openNewSubject(){
   document.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{addSubject(b.dataset.q);b.remove();toast(b.dataset.q+' aggiunta')});
 }
 function chart(s){
-  const gs=gradesOf(s);if(gs.length<2)return'';
+  const gs=gradesOf(s).filter(g=>!g.nm);if(gs.length<2)return'';
   const W=320,H=150,px=i=>18+i*((W-30)/(gs.length-1)),py=v=>H-14-(v-1)/9*(H-28);
   const pts=gs.map((g,i)=>[px(i),py(g.v)]);
   const line=pts.map((p,i)=>(i?'L':'M')+p[0]+' '+p[1]).join(' ');
@@ -958,7 +989,7 @@ function openSubject(id){
   openSheet(`<div class="shead"><div class="ico" style="${icoStyle(s)}">${emojiOf(s.name)}</div><div><h3>${esc(s.name)}</h3><div class="sub">${gs.length} ${gs.length===1?'voto':'voti'}, ${period==='all'?'tutto l\'anno':period+'° periodo'}</div></div><div class="avg t-${tone(a)}">${fmt(a)}</div></div>
   ${chart(s)}
   <div class="row"><button class="btn press" id="addG">Aggiungi voto</button></div>
-  ${gs.length?`<span class="lbl">Voti</span><div class="gl">${gs.map(g=>`<div class="g"><span class="mini t-${tone(g.v)}">${esc(g.label)}</span><div class="meta" data-edit="${g.id}"><b>${g.type}${g.w!==100?` · peso ${g.w}%`:''}</b><span>${dateIt(g.date)}</span></div><button data-del="${g.id}" aria-label="Elimina voto ${esc(g.label)}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button></div>`).join('')}</div>`:`<p class="note" style="text-align:center;margin-top:18px">Nessun voto in questo periodo</p>`}
+  ${gs.length?`<span class="lbl">Voti</span><div class="gl">${gs.map(g=>`<div class="g"><span class="mini t-${tone(g.v)} ${g.nm?'nmg':''}">${esc(g.label)}</span><div class="meta" data-edit="${g.id}"><b>${g.type}${g.w!==100?` · peso ${String(g.w).replace('.',',')}%`:''}${g.nm?' · non fa media':''}</b><span>${dateIt(g.date)}</span></div><button data-del="${g.id}" aria-label="Elimina voto ${esc(g.label)}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg></button></div>`).join('')}</div>`:`<p class="note" style="text-align:center;margin-top:18px">Nessun voto in questo periodo</p>`}
   <div class="row"><button class="btn soft press" id="cust">🎨 Personalizza</button></div><div class="row" style="margin-top:10px"><button class="btn soft press" id="ren">Rinomina</button><button class="btn danger press" id="delS">Elimina</button></div>`);
   $('#cust').onclick=()=>openCustom(s.id);
   document.querySelectorAll('[data-edit]').forEach(b=>b.onclick=()=>{const g=s.grades.find(x=>x.id===b.dataset.edit);if(g)openGradeForm(s.id,()=>openSubject(s.id),{edit:g})});
@@ -1202,7 +1233,7 @@ function applyTheme(){
 mq.addEventListener&&mq.addEventListener('change',applyTheme);
 
 /* ===== traguardi e statistiche ===== */
-const allGrades=()=>S.subjects.flatMap(s=>s.grades.map(g=>({...g,s}))).sort(byT);
+const allGrades=()=>S.subjects.flatMap(s=>s.grades.filter(g=>!g.nm).map(g=>({...g,s}))).sort(byT);
 function streak(){const a=allGrades();let n=0;for(let i=a.length-1;i>=0&&a[i].v>=6;i--)n++;return n}
 function pagellaBlock(){
   const rows=S.subjects.map(s=>({s,a:subjAvg(s)})).filter(r=>r.a!=null);
@@ -2113,6 +2144,76 @@ function tabGo(d){const i=TABS.indexOf(tab)+d;if(i<0||i>=TABS.length)return;tab=
   const end=()=>{if(!on)return;on=false;el.style.transition='transform .5s cubic-bezier(.2,1.25,.35,1)';set();mode=null};
   window.addEventListener('touchend',end,{passive:true});window.addEventListener('touchcancel',end,{passive:true});
 })();
+
+/* ===================== v8: voti personalizzati ===================== */
+function avg(gs){let w=0,v=0;gs.forEach(g=>{if(g.nm)return;w+=g.w;v+=g.v*g.w});return w?v/w:null}
+function needed(s,target,k){let w=0,v=0;gradesOf(s).forEach(g=>{if(g.nm)return;w+=g.w;v+=g.v*g.w});return(target*(w+k*100)-v)/(k*100)}
+function needed1(s,per){let w=0,v=0;s.grades.filter(g=>!g.nm&&periodOf(g.date)===per).forEach(g=>{w+=g.w;v+=g.v*g.w});return(6*(w+100)-v)/100}
+function neededFor(s,target,per){let w=0,v=0;s.grades.filter(g=>!g.nm&&periodOf(g.date)===per).forEach(g=>{w+=g.w;v+=g.v*g.w});return w?(target*(w+100)-v)/100:null}
+const numIt=x=>String(Math.round(x*100)/100).replace('.',',');
+function openGradeForm(subjectId,after,opts){
+  opts=opts||{};
+  if(!S.subjects.length){toast('Prima aggiungi una materia');openNewSubject();return}
+  const E=opts.edit,KW=[25,50,100,150,200];
+  let f;
+  if(E){const l=String(E.label);f={sid:subjectId,n:E.cv?null:parseInt(l),mod:E.cv?'':l.includes('½')?'½':l.includes('+')?'+':l.includes('−')?'-':'',cv:E.cv?numIt(E.v):null,type:E.type,w:E.w,wc:!KW.includes(E.w),nm:!!E.nm,date:E.date}}
+  else f={sid:subjectId||null,n:null,mod:'',cv:null,type:opts.type||'Scritto',w:100,wc:false,nm:false,date:opts.date||today()};
+  f.adv=!!(f.cv||f.nm);
+  const val=()=>{if(f.cv!=null&&f.cv!==''){const x=parseFloat(String(f.cv).replace(',','.'));return isNaN(x)||x<1||x>10?null:Math.round(x*100)/100}return f.n==null?null:gradeVal(f.n,f.mod)};
+  const lab=()=>f.cv?numIt(val()):f.n+(f.mod==='-'?'−':f.mod);
+  const okW=()=>f.w>0&&f.w<=1000;
+  const btnTxt=s=>!s?'Scegli una materia':val()==null?(f.cv?'Voto non valido (1–10)':'Scegli un voto'):!okW()?'Peso non valido':E?'Salva modifiche':'Salva voto';
+  const draw=keep=>{
+    const s=S.subjects.find(x=>x.id===f.sid),v=val();
+    let prev='';
+    if(s&&v!=null){const P=periodOf(f.date),others=s.grades.filter(g=>g!==E&&periodOf(g.date)===P),before=avg(others),afterA=f.nm?before:avg(others.concat([{v,w:f.w}]));
+      prev=`<div class="preview"><div><div class="from">Media ${esc(s.name)}, ${P}° periodo${f.nm?' · questo voto non conta':''}</div><div class="arrow"><span class="c-${tone(before)}">${fmt(before)}</span> <span style="color:var(--muted)">→</span> <span class="c-${tone(afterA)}">${fmt(afterA)}</span></div></div><span class="mini t-${tone(v)} ${f.nm?'nmg':''}" style="font-size:22px;padding:8px 12px;border-radius:14px">${esc(lab())}</span></div>`}
+    openSheet(`<h3>${E?'Modifica voto':'Nuovo voto'}</h3>
+    <span class="lbl">Materia</span><div class="chips scrollx">${S.subjects.map(x=>`<button class="chip press" data-sid="${x.id}" aria-pressed="${f.sid===x.id}">${emojiOf(x.name)} ${esc(x.name)}</button>`).join('')}</div>
+    <span class="lbl">Voto</span><div class="keypad ${f.cv?'dim':''}">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button class="press" data-n="${n}" aria-pressed="${!f.cv&&f.n===n}">${n}</button>`).join('')}</div>
+    <div class="mods ${f.cv?'dim':''}">${[['','tondo'],['+','+'],['-','−'],['½','½']].map(([m,l])=>`<button class="press" data-mod="${m}" aria-pressed="${!f.cv&&f.mod===m}">${l}</button>`).join('')}</div>
+    <span class="lbl">Tipo</span><div class="seg" data-seg="type">${['Scritto','Orale','Pratico'].map(t=>`<button data-v="${t}" aria-pressed="${f.type===t}">${t}</button>`).join('')}</div>
+    <span class="lbl">Peso</span><div class="seg" id="gw">${KW.map(w=>`<button data-v="${w}" aria-pressed="${!f.wc&&f.w===w}">${w}%</button>`).join('')}<button data-v="x" aria-pressed="${f.wc}">Altro</button></div>
+    ${f.wc?`<div class="infield"><input class="field" id="gwc" inputmode="decimal" placeholder="Es. 33" value="${f.w||''}"><span>%</span></div>`:''}
+    <button class="advl" id="advT">${f.adv?'▾':'▸'} Altre opzioni <small>voto preciso, non fa media</small></button>
+    ${f.adv?`<div class="adv">
+      <label class="lbl" for="gcv">Voto preciso</label><input class="field" id="gcv" inputmode="decimal" placeholder="Es. 6,68 (lascia vuoto per usare il tastierino)" value="${f.cv||''}">
+      <span class="lbl">Conta nella media?</span><div class="seg" id="gnm"><button data-v="0" aria-pressed="${!f.nm}">Sì</button><button data-v="1" aria-pressed="${f.nm}">No, non fa media</button></div>
+    </div>`:''}
+    <label class="lbl" for="gd">Data</label><input class="field" type="date" id="gd" value="${f.date}">
+    ${prev}
+    <div class="row"><button class="btn press" id="gOk" ${s&&v!=null&&okW()?'':'disabled'}>${btnTxt(s)}</button></div>`,keep);
+    const box=$('#sheetIn'),later=fn=>setTimeout(()=>{fn();draw(true)},140);
+    box.querySelectorAll('[data-sid]').forEach(b=>b.onclick=()=>later(()=>{f.sid=b.dataset.sid}));
+    box.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>later(()=>{f.cv=null;f.n=+b.dataset.n;if(f.n===10&&(f.mod==='+'||f.mod==='½'))f.mod=''}));
+    box.querySelectorAll('[data-mod]').forEach(b=>b.onclick=()=>{if(f.n===10&&(b.dataset.mod==='+'||b.dataset.mod==='½'))return;later(()=>{f.cv=null;f.mod=b.dataset.mod})});
+    box.querySelectorAll('[data-seg="type"] button').forEach(b=>b.onclick=()=>{f.type=b.dataset.v;draw(true)});
+    box.querySelectorAll('#gw button').forEach(b=>b.onclick=()=>{if(b.dataset.v==='x'){f.wc=true}else{f.wc=false;f.w=+b.dataset.v}draw(true);if(f.wc){const i=$('#gwc');i&&i.focus()}});
+    const upd=()=>{const s2=S.subjects.find(x=>x.id===f.sid),bt=$('#gOk');const ok=s2&&val()!=null&&okW();bt.disabled=!ok;bt.textContent=btnTxt(s2)};
+    const wi=$('#gwc');if(wi){wi.oninput=()=>{f.w=parseFloat(wi.value.replace(',','.'))||0;upd()};wi.onchange=()=>draw(true)}
+    const ci=$('#gcv');if(ci){ci.oninput=()=>{f.cv=ci.value.trim()||null;upd()};ci.onchange=()=>draw(true)}
+    $('#advT').onclick=()=>{f.adv=!f.adv;draw(true)};
+    box.querySelectorAll('#gnm button').forEach(b=>b.onclick=()=>{f.nm=b.dataset.v==='1';draw(true)});
+    $('#gd').onchange=e=>{if(e.target.value){f.date=e.target.value;draw(true)}};
+    $('#gOk').onclick=()=>{
+      const s2=S.subjects.find(x=>x.id===f.sid),gv=val();if(!s2||gv==null||!okW())return;
+      const label=lab(),extra={cv:!!f.cv,nm:f.nm};
+      if(E){const old=S.subjects.find(x=>x.grades.includes(E));if(old&&old!==s2){old.grades=old.grades.filter(x=>x!==E);s2.grades.push(E)}Object.assign(E,{v:gv,label,type:f.type,w:f.w,date:f.date},extra);save();after?after():closeSheet();render();toast('Voto modificato');return}
+      const pp=periodOf(f.date),sameP=s2.grades.filter(g=>periodOf(g.date)===pp),before=avg(sameP),bestB=bestSubj();
+      s2.grades.push({id:uid(),v:gv,label,type:f.type,w:f.w,date:f.date,ts:Date.now(),...extra});save();
+      const afterA=avg(s2.grades.filter(g=>periodOf(g.date)===pp));
+      after?after():closeSheet();
+      if(opts.onSaved)opts.onSaved();
+      const hh=new Date().getHours(),bestA=bestSubj();
+      const ev=f.nm?{}:{rimonta:before!=null&&before<6&&afterA>=6,night:hh<5,alba:hh>=5&&hh<7,domenica:new Date().getDay()===0,sorpasso:!!(bestA&&bestA.id===s2.id&&bestB&&bestB.id!==s2.id&&S.subjects.filter(x=>x.grades.length).length>=3)};
+      const xp0=S.xp||0,gain=xpFor(gv);S.xp=xp0+gain;
+      const nm=checkMissions(),nb=checkBadges(ev);save();
+      render();
+      celebrate(gv,label,s2,before,afterA,pp,{nb,nm,xp0,gain});
+    };
+  };
+  draw(false);
+}
 
 /* ===== intro ===== */
 
