@@ -2,7 +2,7 @@
 <html lang="it">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Pagella</title>
 <meta name="theme-color" content="#07080F" id="metaTheme">
 <meta name="mobile-web-app-capable" content="yes">
@@ -693,6 +693,12 @@ body::after{translate:var(--px,0px) var(--py,0px);transition:translate .4s ease-
 .wemoji{font-size:96px;margin:10px 0;animation:popin .7s cubic-bezier(.2,1.6,.4,1) .15s both}
 .wo{display:flex;justify-content:center;margin-bottom:10px}
 .wcont .btn{margin-top:22px}
+/* niente zoom + toast in alto */
+html{touch-action:pan-x pan-y}
+button,a,input{touch-action:manipulation}
+.toast,.toast.act{top:calc(14px + env(safe-area-inset-top,0px));bottom:auto!important;transform:translate(-50%,-24px);z-index:70}
+.toast.on{transform:translate(-50%,0);flex-direction:row;font-size:14px;line-height:1.3}
+.toast:not(.act).on{display:block}
 </style>
 </head>
 <body>
@@ -1807,7 +1813,10 @@ function editCell(hh,j,span){
 /* ===================== v7 ===================== */
 /* ---------- vibrazioni e suoni ---------- */
 function buzz(p){if(S.haptics===false)return;try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
-document.addEventListener('click',e=>{const b=e.target.closest('button');if(b&&!b.closest('#cel'))buzz(7)},true);
+document.addEventListener('click',e=>{if(e.target.closest('.keypad button,.mods button,.step button'))buzz(5)},true);
+['gesturestart','gesturechange'].forEach(t=>document.addEventListener(t,e=>e.preventDefault()));
+document.addEventListener('touchmove',e=>{if(e.touches&&e.touches.length>1)e.preventDefault()},{passive:false});
+document.addEventListener('wheel',e=>{if(e.ctrlKey)e.preventDefault()},{passive:false});
 let actx=null;
 function tone2(f,t0,d,type,vol){const o=actx.createOscillator(),g=actx.createGain();o.type=type||'triangle';o.frequency.value=f;g.gain.setValueAtTime(0,t0);g.gain.linearRampToValueAtTime(vol||.16,t0+.012);g.gain.exponentialRampToValueAtTime(.0008,t0+d);o.connect(g);g.connect(actx.destination);o.start(t0);o.stop(t0+d+.05)}
 function sfx(kind){
