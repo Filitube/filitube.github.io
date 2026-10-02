@@ -699,6 +699,12 @@ button,a,input{touch-action:manipulation}
 .toast,.toast.act{top:calc(14px + env(safe-area-inset-top,0px));bottom:auto!important;transform:translate(-50%,-24px);z-index:70}
 .toast.on{transform:translate(-50%,0);flex-direction:row;font-size:14px;line-height:1.3}
 .toast:not(.act).on{display:block}
+/* niente barra di scorrimento + righe orizzontali a tutto schermo */
+html,body,.sheet,*{scrollbar-width:none}
+::-webkit-scrollbar{display:none;width:0;height:0}
+.today{margin:0 -18px;padding:2px 18px 8px;scroll-padding:0 18px;scroll-snap-type:x proximity}
+.today .lez{scroll-snap-align:start}
+.wrap{will-change:auto}
 </style>
 </head>
 <body>
@@ -2089,6 +2095,24 @@ function tabGo(d){const i=TABS.indexOf(tab)+d;if(i<0||i>=TABS.length)return;tab=
 
 /* ---------- parallasse delle stelle ---------- */
 (()=>{let raf=0,px=0,py=0;window.addEventListener('deviceorientation',e=>{if(e.gamma==null)return;px=Math.max(-1,Math.min(1,e.gamma/40));py=Math.max(-1,Math.min(1,((e.beta||45)-45)/40));if(!raf)raf=requestAnimationFrame(()=>{raf=0;const r=document.documentElement.style;r.setProperty('--px',(px*14).toFixed(1)+'px');r.setProperty('--py',(py*14).toFixed(1)+'px')})})})();
+
+/* ---------- effetto elastico a inizio e fine pagina ---------- */
+(()=>{
+  const el=document.querySelector('.wrap');let y0=null,last=0,mode=null,on=false;
+  const atTop=()=>window.scrollY<=0,atBot=()=>window.innerHeight+window.scrollY>=document.documentElement.scrollHeight-1;
+  const rub=d=>(1-1/(1+d/650))*.11;
+  const set=(m,d)=>{if(!d){el.style.transform='';return}el.style.transformOrigin=m==='top'?'50% 0':'50% 100%';el.style.transform=`scaleY(${1+rub(d)})`};
+  window.addEventListener('touchstart',e=>{if(e.touches.length>1||$('#sheet').classList.contains('on')||$('#cel').classList.contains('on')||e.target.closest('.wrapped,.today,.chips'))return;y0=last=e.touches[0].clientY;mode=null;on=true;el.style.transition='none'},{passive:true});
+  window.addEventListener('touchmove',e=>{
+    if(!on)return;const y=e.touches[0].clientY,step=y-last;last=y;
+    if(!mode){if(step>0&&atTop()){mode='top';y0=y-step}else if(step<0&&atBot()){mode='bot';y0=y-step}else return}
+    const dy=y-y0;
+    if(mode==='top'){if(dy>0)set('top',dy);else{set();mode=null}}
+    else{if(dy<0)set('bot',-dy);else{set();mode=null}}
+  },{passive:true});
+  const end=()=>{if(!on)return;on=false;el.style.transition='transform .5s cubic-bezier(.2,1.25,.35,1)';set();mode=null};
+  window.addEventListener('touchend',end,{passive:true});window.addEventListener('touchcancel',end,{passive:true});
+})();
 
 /* ===== intro ===== */
 
