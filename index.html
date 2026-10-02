@@ -736,6 +736,71 @@ html,body,.sheet,*{scrollbar-width:none}
 .infield{position:relative;margin-top:8px}
 .infield span{position:absolute;right:16px;top:50%;transform:translateY(-50%);color:var(--muted);font-weight:700}
 #gw button{padding:8px 0;font-size:13px}
+/* ================= v9 ================= */
+/* la pressione la gestisce lo script: niente salti a scatti del CSS */
+.btn,.keypad button,.mods button,.chip,.fab,.minibtns button,.step button,.wbtn,.subj,.btile,.atile,.oblk,.lvmini,.wcard{transition:box-shadow .12s ease,filter .12s ease,background .15s,color .15s!important}
+.btn.press:active,.btn.soft.press:active,.btn.danger.press:active,.fab.press:active,.keypad button.press:active,.mods button.press:active,.chip.press:active,.step button:active,.minibtns button.press:active,.subj.press:active,.press:active{transform:none}
+.fab.press:active svg{transform:none}
+.btn.isdown{box-shadow:0 0 0 #000,0 4px 10px -8px var(--g1)!important;filter:brightness(1.1)}
+.btn.soft.isdown,.btn.danger.isdown{box-shadow:0 0 0 #000!important}
+.fab.isdown{box-shadow:0 0 0 #000,0 6px 14px -8px var(--g1)!important;filter:brightness(1.12)}
+.keypad button.isdown,.mods button.isdown,.chip.isdown{box-shadow:0 0 0 #000!important;filter:brightness(1.2)}
+.fab svg{transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.fab.isdown svg{transform:rotate(45deg)}
+
+/* spaziature coerenti */
+.wrap{padding:22px 18px 150px}
+.titlebar{align-items:flex-start}
+.periods{margin-top:20px}
+.over{margin-top:18px;padding:20px;gap:20px}
+.msg{margin-top:12px;padding:12px 16px 12px 10px;gap:12px;align-items:center}
+.msg b{margin-bottom:2px}
+.sechead{margin:32px 4px 14px}
+.list{gap:12px}
+.subj{padding:14px 16px 14px 14px;gap:14px}
+.sgrid{gap:12px}
+.sbox{padding:16px}
+.ncard,.goal,.mis{padding:16px}
+.mlist{gap:10px}
+.bgrid{gap:12px}
+.btile{padding:16px 6px 14px}
+.rhead{margin:22px 4px 12px}
+.card{padding:18px}
+.sheet{padding:10px 20px calc(30px + env(safe-area-inset-bottom,0px))}
+.lbl{margin:22px 2px 10px}
+.row{margin-top:22px}
+.row+.row{margin-top:12px}
+.keypad{gap:10px}
+.mods{gap:10px;margin-top:10px}
+.preview{margin-top:22px}
+.note{margin:14px 4px 0}
+.today{gap:10px}
+.minibtns{gap:10px;margin-top:18px}
+.empty{padding:28px 20px}
+
+/* card livello centrata */
+.lvc{display:flex;flex-direction:column;align-items:center;text-align:center;margin-top:18px;padding:22px 20px 20px;border-radius:28px;background:radial-gradient(90% 70% at 50% 0%,color-mix(in srgb,var(--g2) 26%,transparent),transparent 70%),var(--surface);box-shadow:var(--shadow)}
+.lvo{margin:-4px 0 6px}
+.lvc .lvk{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.lvt{display:block;font-family:Sora,sans-serif;font-size:26px;letter-spacing:-.03em;margin:4px 0 16px}
+.lvc .xpbar{width:100%}
+.lvr{display:flex;justify-content:space-between;width:100%;margin-top:10px;font-size:13px;color:var(--muted);font-weight:600}
+.lvc .btn{margin-top:18px}
+/* celebrazioni: raggi centrati sul protagonista */
+.celcard{padding:30px 24px 22px}
+.celcard .cmas{margin:0 0 8px}
+.celcard.lvup .rays,.celcard.mis-c .rays{top:82px}
+.celcard.bunl .rays{top:86px}
+.celcard .rays{top:82px}
+.celcard .lvbig{margin-top:2px}
+.celcard h4{margin:14px 0 6px}
+.celcard .ctx{margin-top:16px}
+.celcard .tap{margin-top:16px}
+/* armadio */
+.wprev{margin:10px 0 2px}
+.agrid{gap:10px}
+.atile{padding:12px 4px}
+.ob-moons{animation:obbob 4s ease-in-out infinite;transform-box:view-box;transform-origin:50px 50px}
 </style>
 </head>
 <body>
@@ -996,14 +1061,14 @@ function openSubject(id){
   $('#addG').onclick=()=>openGradeForm(s.id,()=>openSubject(s.id));
   document.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{
     const g=s.grades.find(x=>x.id===b.dataset.del);
-    const idx=s.grades.indexOf(g);s.grades=s.grades.filter(x=>x.id!==g.id);save();openSubject(s.id);actionToast(`${esc(g.label)} eliminato`,'Annulla',()=>{s.grades.splice(idx,0,g);save();if($('#sheet').classList.contains('on'))openSubject(s.id);else render()});
+    deleteGrade(s,g);
   });
   $('#ren').onclick=()=>{
     openSheet(`<h3>Rinomina materia</h3><label class="lbl" for="rn">Nome</label><input class="field" id="rn" maxlength="40" value="${esc(s.name)}"><div class="row"><button class="btn soft press" id="rb">Annulla</button><button class="btn press" id="rk">Salva</button></div>`);
     $('#rb').onclick=()=>openSubject(s.id);
     $('#rk').onclick=()=>{const n=$('#rn').value.trim();if(n){s.name=n;save();openSubject(s.id)}};
   };
-  $('#delS').onclick=()=>confirmSheet(`Eliminare ${esc(s.name)}?`,'Verranno cancellati anche tutti i suoi voti.','Elimina',()=>{S.subjects=S.subjects.filter(x=>x.id!==s.id);save();toast('Materia eliminata');closeSheet()},()=>openSubject(s.id));
+  $('#delS').onclick=()=>confirmSheet(`Eliminare ${esc(s.name)}?`,'Verranno cancellati anche tutti i suoi voti.','Elimina',()=>{removeSubject(s);toast('Materia eliminata');closeSheet()},()=>openSubject(s.id));
 }
 function openGradeForm(subjectId,after,opts){
   opts=opts||{};
@@ -1057,15 +1122,13 @@ function openSettings(){
   <span class="lbl">Condotta nella media per i crediti</span><div class="seg" id="ic"><button data-v="1" aria-pressed="${S.inclCondotta}">Includi</button><button data-v="0" aria-pressed="${!S.inclCondotta}">Escludi</button></div>
   <span class="lbl">Tema</span><div class="seg" id="tmode">${[['auto','Automatico'],['light','Chiaro'],['dark','Scuro']].map(([k,l])=>`<button data-v="${k}" aria-pressed="${S.theme.mode===k}">${l}</button>`).join('')}</div>
   <span class="lbl">Colore</span><div class="swatches">${Object.entries(ACCENTS).map(([k,c])=>`<button class="sw press" data-acc="${k}" aria-label="${k}" aria-pressed="${S.theme.accent===k}" style="background:linear-gradient(135deg,${c[2]},${c[3]})"></button>`).join('')}</div>
-  <span class="lbl">Suoni</span><div class="seg" id="tsnd"><button data-v="1" aria-pressed="${S.sound!==false}">Attivi</button><button data-v="0" aria-pressed="${S.sound===false}">Spenti</button></div>
   <span class="lbl">Vibrazioni</span><div class="seg" id="thap"><button data-v="1" aria-pressed="${S.haptics!==false}">Attive</button><button data-v="0" aria-pressed="${S.haptics===false}">Spente</button></div>
   <span class="lbl">Backup dei dati</span><div class="twobtn" style="margin-top:0"><button class="btn soft press" id="bkExp">Esporta</button><button class="btn soft press" id="bkImp">Importa</button></div>
   <p class="note" style="margin-top:6px">Ti serve per spostare voti e orario su un altro dispositivo o nell'app.</p>
   <div class="row"><button class="btn danger press" id="reset">Cancella tutti i dati</button></div>`,true);
   document.querySelectorAll('#tmode button').forEach(b=>b.onclick=()=>{S.theme.mode=b.dataset.v;save();applyTheme();openSettings()});
   document.querySelectorAll('[data-acc]').forEach(b=>b.onclick=()=>{S.theme.accent=b.dataset.acc;S.flags=S.flags||{};S.flags.tema=1;save();applyTheme();openSettings();unlockNow()});
-  document.querySelectorAll('#tsnd button').forEach(b=>b.onclick=()=>{S.sound=b.dataset.v==='1';save();openSettings();if(S.sound)sfx('ok')});
-  document.querySelectorAll('#thap button').forEach(b=>b.onclick=()=>{S.haptics=b.dataset.v==='1';save();openSettings();buzz(30)});
+    document.querySelectorAll('#thap button').forEach(b=>b.onclick=()=>{S.haptics=b.dataset.v==='1';save();openSettings();buzz(30)});
   $('#bkExp').onclick=()=>{
     S.flags=S.flags||{};S.flags.backup=1;save();setTimeout(unlockNow,600);
     const code=JSON.stringify(S);
@@ -2211,6 +2274,196 @@ function openGradeForm(subjectId,after,opts){
       render();
       celebrate(gv,label,s2,before,afterA,pp,{nb,nm,xp0,gain});
     };
+  };
+  draw(false);
+}
+
+/* ===================== v9 ===================== */
+/* ---------- niente suoni ---------- */
+function sfx(){}
+
+/* ---------- pressione animata fluida (WAAPI) ---------- */
+(()=>{
+  const SEL='.btn,.fab,.keypad button,.mods button,.chip,.minibtns button,.step button,.wbtn,.atile,.btile,.subj,.lvmini,.wcard,.oblk,.round,.lvpill,.flpill,.egrid button,.sw';
+  const depth=b=>b.classList.contains('fab')?7:b.classList.contains('btn')?6:b.closest('.keypad')?5:(b.closest('.mods')||b.classList.contains('chip'))?4:0;
+  const down=b=>{const d=depth(b),sq=d?'scale(.97,.93)':'scale(.95)';b._pa&&b._pa.cancel();b._st=`translateY(${d}px) ${sq}`;
+    b._pa=b.animate([{transform:'none'},{transform:b._st}],{duration:110,easing:'cubic-bezier(.25,.1,.25,1)',fill:'forwards'});b.classList.add('isdown')};
+  const up=b=>{if(!b._st)return;const from=b._st;b._st=null;b.classList.remove('isdown');b._pa&&b._pa.cancel();
+    b._pa=b.animate([{transform:from},{transform:'translateY(-2px) scale(1.025,1.035)',offset:.42},{transform:'translateY(.5px) scale(.995,.99)',offset:.72},{transform:'none'}],{duration:420,easing:'cubic-bezier(.2,.7,.3,1)'})};
+  let cur=null;
+  document.addEventListener('pointerdown',e=>{const b=e.target.closest(SEL);if(!b||b.disabled)return;cur=b;down(b)},{passive:true});
+  const rel=()=>{if(cur){up(cur);cur=null}};
+  document.addEventListener('pointerup',rel,{passive:true});document.addEventListener('pointercancel',rel,{passive:true});
+  document.addEventListener('pointermove',e=>{if(cur&&e.pointerType==='touch'){const r=cur.getBoundingClientRect();if(e.clientX<r.left-20||e.clientX>r.right+20||e.clientY<r.top-20||e.clientY>r.bottom+20)rel()}},{passive:true});
+})();
+
+/* ---------- nuova mascotte ---------- */
+ACC.length=0;
+ACC.push(
+ {id:'occhiali',slot:'face',lv:2,n:'Occhiali da sole',svg:'<g><rect x="28" y="37" width="19" height="13" rx="5" fill="#15121F"/><rect x="53" y="37" width="19" height="13" rx="5" fill="#15121F"/><path d="M47 42 h6" stroke="#15121F" stroke-width="2.6"/><path d="M32 40.5 h5" stroke="#fff" opacity=".45" stroke-width="2" stroke-linecap="round"/><path d="M57 40.5 h5" stroke="#fff" opacity=".45" stroke-width="2" stroke-linecap="round"/></g>'},
+ {id:'oro',slot:'ring',lv:3,n:'Anello d\'oro',ring:['#C98400','#FFC145']},
+ {id:'berretto',slot:'head',lv:4,n:'Berretto',svg:'<g><path d="M24 31 Q50 -3 76 31 Z" fill="#FF5F6D"/><path d="M37 17 Q50 10 63 17" stroke="#fff" stroke-width="2" opacity=".35" fill="none"/><rect x="22" y="26" width="56" height="8" rx="4" fill="#F1F3FF"/><circle cx="50" cy="6" r="5.5" fill="#F1F3FF"/></g>'},
+ {id:'cuffie',slot:'head',lv:6,n:'Cuffie',svg:'<g><path d="M20 46 Q20 13 50 13 Q80 13 80 46" fill="none" stroke="#2B2B3A" stroke-width="5" stroke-linecap="round"/><rect x="13" y="38" width="12" height="19" rx="6" fill="#4CC9F0"/><rect x="75" y="38" width="12" height="19" rx="6" fill="#4CC9F0"/></g>'},
+ {id:'ghiaccio',slot:'ring',lv:7,n:'Anello di ghiaccio',ring:['#4D9DE0','#BDE4FF']},
+ {id:'visore',slot:'face',lv:8,n:'Visore spaziale',svg:'<g><rect x="25" y="36" width="50" height="16" rx="8" fill="#4CC9F0" opacity=".88"/><rect x="29" y="39" width="16" height="3" rx="1.5" fill="#fff" opacity=".7"/></g>'},
+ {id:'corona',slot:'head',lv:10,n:'Corona',svg:'<g><path d="M31 24 L35 8 L42.5 18 L50 3 L57.5 18 L65 8 L69 24 Z" fill="#FFC145" stroke="#E69500" stroke-width="1.6" stroke-linejoin="round"/><circle cx="50" cy="12" r="2.6" fill="#FF5F6D"/><circle cx="38" cy="18" r="1.8" fill="#4CC9F0"/><circle cx="62" cy="18" r="1.8" fill="#4CC9F0"/></g>'},
+ {id:'arcobaleno',slot:'ring',lv:12,n:'Anello arcobaleno',ring:'rainbow'},
+ {id:'lune',slot:'extra',lv:13,n:'Due lune',svg:'<g class="ob-moons"><circle cx="9" cy="30" r="5" fill="#C9CEE6"/><circle cx="7.5" cy="28.5" r="1.3" fill="#9AA0BC"/><circle cx="92" cy="74" r="3.6" fill="#E6D3B3"/></g>'},
+ {id:'aureola',slot:'head',lv:15,n:'Aureola',svg:'<g class="ob-halo"><ellipse cx="50" cy="8" rx="19" ry="5.5" fill="none" stroke="#FFE066" stroke-width="3.6"/><ellipse cx="50" cy="8" rx="19" ry="5.5" fill="none" stroke="#FFE066" stroke-width="8" opacity=".2"/></g>'}
+);
+function accOn(){S.acc=S.acc||{};return['head','face','ring','extra'].map(sl=>ACC.find(a=>a.id===S.acc[sl]&&a.slot===sl)).filter(Boolean)}
+function orbi(mood,size,cls,accList){
+  mood=mood||'happy';size=size||64;const u=++obN,ink='#1E1640';
+  const acc=accList||accOn(),pick=sl=>acc.find(a=>a.slot===sl),head=pick('head'),face=pick('face'),ring=pick('ring'),extra=pick('extra');
+  let rb='#2BB58A',rf='#3DDBA4',defs='';
+  if(ring&&ring.ring==='rainbow'){defs=`<linearGradient id="rg${u}" x1="0" x2="1"><stop offset="0" stop-color="#FF5F6D"/><stop offset=".25" stop-color="#FFC145"/><stop offset=".5" stop-color="#3DDBA4"/><stop offset=".75" stop-color="#4CC9F0"/><stop offset="1" stop-color="#B197FC"/></linearGradient>`;rb=rf=`url(#rg${u})`}
+  else if(ring){rb=ring.ring[0];rf=ring.ring[1]}
+  const mouths={happy:`<path d="M43 52 Q50 58.5 57 52" fill="none" stroke="${ink}" stroke-width="3" stroke-linecap="round"/>`,
+    ecstatic:`<path d="M41 50 Q50 63 59 50 Z" fill="${ink}"/><path d="M45 56 Q50 59.5 55 56 Q50 54.5 45 56Z" fill="#FF7A9A"/>`,
+    sad:`<path d="M43 56 Q50 50.5 57 56" fill="none" stroke="${ink}" stroke-width="3" stroke-linecap="round"/>`,
+    determined:`<path d="M44 54 Q50 56 56 53" fill="none" stroke="${ink}" stroke-width="3" stroke-linecap="round"/>`};
+  const brows=mood==='determined'?`<path d="M33 31 L44 35" stroke="${ink}" stroke-width="2.8" stroke-linecap="round"/><path d="M67 31 L56 35" stroke="${ink}" stroke-width="2.8" stroke-linecap="round"/>`:mood==='sad'?`<path d="M34 35 L43 31.5" stroke="${ink}" stroke-width="2.5" stroke-linecap="round"/><path d="M66 35 L57 31.5" stroke="${ink}" stroke-width="2.5" stroke-linecap="round"/>`:'';
+  const eyes=mood==='ecstatic'?`<path d="M33 45 Q38.5 38 44 45" fill="none" stroke="${ink}" stroke-width="3.2" stroke-linecap="round"/><path d="M56 45 Q61.5 38 67 45" fill="none" stroke="${ink}" stroke-width="3.2" stroke-linecap="round"/>`
+    :`<g class="ob-eyes"><ellipse cx="38.5" cy="43" rx="5.6" ry="7" fill="${ink}"/><ellipse cx="61.5" cy="43" rx="5.6" ry="7" fill="${ink}"/><circle cx="40.6" cy="40.2" r="2.3" fill="#fff"/><circle cx="63.6" cy="40.2" r="2.3" fill="#fff"/><circle cx="37" cy="45.5" r="1" fill="#fff" opacity=".7"/><circle cx="60" cy="45.5" r="1" fill="#fff" opacity=".7"/></g>`;
+  const tear=mood==='sad'?`<path class="ob-tear" d="M32 49 Q29.5 54.5 32 56.5 Q34.5 54.5 32 49Z" fill="#7FD6FF"/>`:'';
+  return `<svg class="orbi ob-${mood} ${cls||''}" width="${size}" height="${size}" viewBox="0 0 100 100" aria-hidden="true">
+  <defs><radialGradient id="obg${u}" cx="35%" cy="28%" r="80%"><stop offset="0" stop-color="#CBBEFF"/><stop offset=".55" stop-color="#8573FF"/><stop offset="1" stop-color="#4A3BD0"/></radialGradient>${defs}</defs>
+  ${extra?extra.svg:''}
+  <g class="ob-body">
+    <g transform="rotate(-14 50 58)"><path d="M3 58 A47 11.5 0 0 1 97 58" fill="none" stroke="${rb}" stroke-width="5.5" stroke-linecap="round" opacity=".85"/></g>
+    <circle cx="50" cy="50" r="30" fill="url(#obg${u})"/>
+    <circle cx="67" cy="31" r="4.2" fill="#2E2391" opacity=".22"/><circle cx="72" cy="40" r="2.2" fill="#2E2391" opacity=".2"/><circle cx="29" cy="36" r="2.6" fill="#2E2391" opacity=".16"/>
+    <ellipse cx="39" cy="28" rx="9" ry="4.8" fill="#fff" opacity=".24" transform="rotate(-24 39 28)"/>
+    <ellipse cx="30.5" cy="51" rx="4.6" ry="2.8" fill="#FF8FB1" opacity=".8"/><ellipse cx="69.5" cy="51" rx="4.6" ry="2.8" fill="#FF8FB1" opacity=".8"/>
+    ${brows}${eyes}${mouths[mood]||mouths.happy}${tear}
+    ${face?face.svg:''}
+    <g transform="rotate(-14 50 58)"><path d="M3 58 A47 11.5 0 0 0 97 58" fill="none" stroke="${rf}" stroke-width="5.5" stroke-linecap="round"/></g>
+    ${head?head.svg:''}
+  </g></svg>`;
+}
+function openWardrobe(){
+  const lv=level(S.xp||0).lv;S.acc=S.acc||{};
+  const slots=[['head','Testa'],['face','Viso'],['ring','Anello'],['extra','Extra']];
+  openSheet(`<h3>L'armadio di Orbi</h3><div class="wprev">${orbi('happy',132)}</div>
+  ${slots.map(([sl,n])=>`<span class="lbl">${n}</span><div class="agrid">${ACC.filter(a=>a.slot===sl).map(a=>{const ok=lv>=a.lv,on=S.acc[sl]===a.id;
+    return `<button class="atile ${on?'on2':''} ${ok?'':'lock'}" data-acc2="${a.id}" ${ok?'':'disabled'}>${orbi('happy',54,'',[a])}<b>${a.n}</b><small>${ok?(on?'Indossato':'Indossa'):'🔒 Livello '+a.lv}</small></button>`}).join('')}</div>`).join('')}
+  <p class="note" style="text-align:center;margin-top:18px">Sali di livello per sbloccare altri accessori.</p>`,true);
+  document.querySelectorAll('[data-acc2]').forEach(b=>b.onclick=()=>{const a=ACC.find(x=>x.id===b.dataset.acc2);S.acc[a.slot]=S.acc[a.slot]===a.id?'':a.id;save();openWardrobe()});
+}
+function levelCard(){
+  const L=level(S.xp||0);
+  return `<div class="lvc"><div class="lvo">${orbi(L.lv>=5?'ecstatic':'happy',104)}</div><span class="lvk">Livello ${L.lv}</span><b class="lvt">${L.title}</b>
+  <div class="xpbar"><i style="width:${L.cur/L.need*100}%"></i></div>
+  <div class="lvr"><span>${L.cur} / ${L.need} XP</span><span>🏅 ${S.badges.length}/${BADGES.length} traguardi</span></div>
+  <button class="btn soft press" id="wardBtn">👕 Armadio di Orbi</button></div>`;
+}
+
+/* ---------- anti-trucco: XP e traguardi seguono i voti veri ---------- */
+['rimonta','sorpasso','gufo','alba','domenica','quarantadue'].forEach(id=>{const b=BADGES.find(x=>x.id===id);if(b)b.ev=1});
+['dicasa','settegiorni','abitudine','centogiorni','architetto','contabile','stilista','previdente','influencer'].forEach(id=>{const b=BADGES.find(x=>x.id===id);if(b)b.perm=1});
+function maxSuff(c){let best=0,cur=0;c.a.forEach(g=>{cur=g.v>=6?cur+1:0;if(cur>best)best=cur});return best}
+[['fiamme',5],['cometa',10],['iper',20]].forEach(([id,n])=>{const b=BADGES.find(x=>x.id===id);if(b)b.p=c=>[maxSuff(c),n]});
+function revoke(id){const b=BADGES.find(x=>x.id===id);S.badges=S.badges.filter(x=>x!==id);if(b)S.xp=Math.max(0,(S.xp||0)-RAR[b.r].xp);if(S.bdates)delete S.bdates[id];if(S.bsrc)delete S.bsrc[id]}
+function revalidate(removedIds){
+  S.bsrc=S.bsrc||{};
+  (removedIds||[]).forEach(gid=>Object.keys(S.bsrc).forEach(bid=>{if(S.bsrc[bid]===gid){const b=BADGES.find(x=>x.id===bid);if(b&&b.ev&&S.badges.includes(bid))revoke(bid)}}));
+  for(let k=0;k<5;k++){const c=bctx({});let ch=false;
+    S.badges.slice().forEach(id=>{const b=BADGES.find(x=>x.id===id);if(!b||b.ev||b.perm)return;if(!bDone(b,c)){revoke(id);ch=true}});
+    if(!ch)break}
+  const act=activeMissions(),mc=misCtx();
+  act.forEach(m=>{if(S.mis.done.includes(m.id)){const[x,mx]=m.f(mc);if(x<mx){S.mis.done=S.mis.done.filter(i=>i!==m.id);S.xp=Math.max(0,(S.xp||0)-m.xp)}}});
+}
+function snapProgress(){return JSON.stringify({xp:S.xp,badges:S.badges,bdates:S.bdates,bsrc:S.bsrc,mis:S.mis})}
+function restoreProgress(j){Object.assign(S,JSON.parse(j))}
+function deleteGrade(s,g){
+  const snap=snapProgress(),idx=s.grades.indexOf(g);
+  s.grades=s.grades.filter(x=>x!==g);
+  S.xp=Math.max(0,(S.xp||0)-(g.xp!=null?g.xp:xpFor(g.v)));
+  revalidate([g.id]);save();
+  if($('#sheet').classList.contains('on'))openSubject(s.id);render();
+  actionToast(`${esc(g.label)} eliminato`,'Annulla',()=>{s.grades.splice(idx,0,g);restoreProgress(snap);save();if($('#sheet').classList.contains('on'))openSubject(s.id);render()});
+}
+function removeSubject(s){
+  const ids=s.grades.map(g=>g.id);
+  S.xp=Math.max(0,(S.xp||0)-s.grades.reduce((t,g)=>t+(g.xp!=null?g.xp:xpFor(g.v)),0));
+  S.subjects=S.subjects.filter(x=>x!==s);revalidate(ids);save();
+}
+
+/* ---------- form voto: aggiornamenti leggeri ---------- */
+function openGradeForm(subjectId,after,opts){
+  opts=opts||{};
+  if(!S.subjects.length){toast('Prima aggiungi una materia');openNewSubject();return}
+  const E=opts.edit,KW=[25,50,100,150,200];
+  let f;
+  if(E){const l=String(E.label);f={sid:subjectId,n:E.cv?null:parseInt(l),mod:E.cv?'':l.includes('½')?'½':l.includes('+')?'+':l.includes('−')?'-':'',cv:E.cv?numIt(E.v):null,type:E.type,w:E.w,wc:!KW.includes(E.w),nm:!!E.nm,date:E.date}}
+  else f={sid:subjectId||null,n:null,mod:'',cv:null,type:opts.type||'Scritto',w:100,wc:false,nm:false,date:opts.date||today()};
+  f.adv=!!(f.cv||f.nm);
+  const val=()=>{if(f.cv){const x=parseFloat(String(f.cv).replace(',','.'));return isNaN(x)||x<1||x>10?null:Math.round(x*100)/100}return f.n==null?null:gradeVal(f.n,f.mod)};
+  const lab=()=>f.cv?numIt(val()):f.n+(f.mod==='-'?'−':f.mod);
+  const okW=()=>f.w>0&&f.w<=1000;
+  const subj=()=>S.subjects.find(x=>x.id===f.sid);
+  const btnTxt=()=>!subj()?'Scegli una materia':val()==null?(f.cv?'Voto non valido (1–10)':'Scegli un voto'):!okW()?'Peso non valido':E?'Salva modifiche':'Salva voto';
+  const dyn=()=>{const s=subj(),v=val();let prev='';
+    if(s&&v!=null){const P=periodOf(f.date),others=s.grades.filter(g=>g!==E&&periodOf(g.date)===P),before=avg(others),afterA=f.nm?before:avg(others.concat([{v,w:f.w}]));
+      prev=`<div class="preview"><div><div class="from">Media ${esc(s.name)}, ${P}° periodo${f.nm?' · questo voto non conta':''}</div><div class="arrow"><span class="c-${tone(before)}">${fmt(before)}</span> <span style="color:var(--muted)">→</span> <span class="c-${tone(afterA)}">${fmt(afterA)}</span></div></div><span class="mini t-${tone(v)} ${f.nm?'nmg':''}" style="font-size:22px;padding:8px 12px;border-radius:14px">${esc(lab())}</span></div>`}
+    return prev+`<div class="row"><button class="btn press" id="gOk" ${s&&v!=null&&okW()?'':'disabled'}>${btnTxt()}</button></div>`};
+  const sync=()=>{const box=$('#sheetIn');
+    box.querySelectorAll('[data-sid]').forEach(b=>b.setAttribute('aria-pressed',String(b.dataset.sid===f.sid)));
+    box.querySelectorAll('[data-n]').forEach(b=>b.setAttribute('aria-pressed',String(!f.cv&&f.n===+b.dataset.n)));
+    box.querySelectorAll('[data-mod]').forEach(b=>b.setAttribute('aria-pressed',String(!f.cv&&f.mod===b.dataset.mod)));
+    box.querySelectorAll('[data-seg="type"] button').forEach(b=>b.setAttribute('aria-pressed',String(f.type===b.dataset.v)));
+    box.querySelectorAll('#gnm button').forEach(b=>b.setAttribute('aria-pressed',String(f.nm===(b.dataset.v==='1'))));
+    box.querySelectorAll('.keypad,.mods').forEach(x=>x.classList.toggle('dim',!!f.cv));
+    $('#gdyn').innerHTML=dyn();bindOk()};
+  const bindOk=()=>{$('#gOk').onclick=save_};
+  const draw=keep=>{
+    openSheet(`<h3>${E?'Modifica voto':'Nuovo voto'}</h3>
+    <span class="lbl">Materia</span><div class="chips scrollx">${S.subjects.map(x=>`<button class="chip" data-sid="${x.id}" aria-pressed="${f.sid===x.id}">${emojiOf(x.name)} ${esc(x.name)}</button>`).join('')}</div>
+    <span class="lbl">Voto</span><div class="keypad ${f.cv?'dim':''}">${[1,2,3,4,5,6,7,8,9,10].map(n=>`<button data-n="${n}" aria-pressed="${!f.cv&&f.n===n}">${n}</button>`).join('')}</div>
+    <div class="mods ${f.cv?'dim':''}">${[['','tondo'],['+','+'],['-','−'],['½','½']].map(([m,l])=>`<button data-mod="${m}" aria-pressed="${!f.cv&&f.mod===m}">${l}</button>`).join('')}</div>
+    <span class="lbl">Tipo</span><div class="seg" data-seg="type">${['Scritto','Orale','Pratico'].map(t=>`<button data-v="${t}" aria-pressed="${f.type===t}">${t}</button>`).join('')}</div>
+    <span class="lbl">Peso</span><div class="seg" id="gw">${KW.map(w=>`<button data-v="${w}" aria-pressed="${!f.wc&&f.w===w}">${w}%</button>`).join('')}<button data-v="x" aria-pressed="${f.wc}">Altro</button></div>
+    ${f.wc?`<div class="infield"><input class="field" id="gwc" inputmode="decimal" placeholder="Es. 33" value="${f.w||''}"><span>%</span></div>`:''}
+    <button class="advl" id="advT">${f.adv?'▾':'▸'} Altre opzioni <small>voto preciso, non fa media</small></button>
+    ${f.adv?`<div class="adv"><label class="lbl" for="gcv">Voto preciso</label><input class="field" id="gcv" inputmode="decimal" placeholder="Es. 6,68" value="${f.cv||''}">
+      <span class="lbl">Conta nella media?</span><div class="seg" id="gnm"><button data-v="0" aria-pressed="${!f.nm}">Sì</button><button data-v="1" aria-pressed="${f.nm}">No, non fa media</button></div></div>`:''}
+    <label class="lbl" for="gd">Data</label><input class="field" type="date" id="gd" value="${f.date}">
+    <div id="gdyn">${dyn()}</div>`,keep);
+    const box=$('#sheetIn');
+    box.querySelectorAll('[data-sid]').forEach(b=>b.onclick=()=>{f.sid=b.dataset.sid;sync()});
+    box.querySelectorAll('[data-n]').forEach(b=>b.onclick=()=>{f.cv=null;f.n=+b.dataset.n;if(f.n===10&&(f.mod==='+'||f.mod==='½'))f.mod='';const c=$('#gcv');if(c)c.value='';sync()});
+    box.querySelectorAll('[data-mod]').forEach(b=>b.onclick=()=>{if(f.n===10&&(b.dataset.mod==='+'||b.dataset.mod==='½'))return;f.cv=null;f.mod=b.dataset.mod;const c=$('#gcv');if(c)c.value='';sync()});
+    box.querySelectorAll('[data-seg="type"] button').forEach(b=>b.onclick=()=>{f.type=b.dataset.v;sync()});
+    box.querySelectorAll('#gw button').forEach(b=>b.onclick=()=>{if(b.dataset.v==='x'){f.wc=true;draw(true);const i=$('#gwc');i&&i.focus()}else{const was=f.wc;f.wc=false;f.w=+b.dataset.v;if(was)draw(true);else{box.querySelectorAll('#gw button').forEach(x=>x.setAttribute('aria-pressed',String(x.dataset.v===String(f.w))));sync()}}});
+    const wi=$('#gwc');if(wi)wi.oninput=()=>{f.w=parseFloat(wi.value.replace(',','.'))||0;sync()};
+    const ci=$('#gcv');if(ci)ci.oninput=()=>{f.cv=ci.value.trim()||null;sync()};
+    $('#advT').onclick=()=>{f.adv=!f.adv;draw(true)};
+    box.querySelectorAll('#gnm button').forEach(b=>b.onclick=()=>{f.nm=b.dataset.v==='1';sync()});
+    $('#gd').onchange=e=>{if(e.target.value){f.date=e.target.value;sync()}};
+    bindOk();
+  };
+  const save_=()=>{
+    const s2=subj(),gv=val();if(!s2||gv==null||!okW())return;
+    const label=lab(),extra={cv:!!f.cv,nm:f.nm};
+    if(E){
+      const old=S.subjects.find(x=>x.grades.includes(E));if(old&&old!==s2){old.grades=old.grades.filter(x=>x!==E);s2.grades.push(E)}
+      const oldXp=E.xp!=null?E.xp:xpFor(E.v),nx=xpFor(gv);
+      Object.assign(E,{v:gv,label,type:f.type,w:f.w,date:f.date,xp:nx},extra);S.xp=Math.max(0,(S.xp||0)-oldXp+nx);
+      revalidate([]);const nb=checkBadges({}),nmis=checkMissions();save();after?after():closeSheet();render();toast('Voto modificato');
+      if(nb.length||nmis.length){celQ=celQ.concat(nmis.map(missionScreen),nb.map(badgeScreen));showCel()}
+      return}
+    const pp=periodOf(f.date),before=avg(s2.grades.filter(g=>periodOf(g.date)===pp)),bestB=bestSubj();
+    const xp0=S.xp||0,gain=xpFor(gv),gid=uid();
+    s2.grades.push({id:gid,v:gv,label,type:f.type,w:f.w,date:f.date,ts:Date.now(),xp:gain,...extra});
+    const afterA=avg(s2.grades.filter(g=>periodOf(g.date)===pp));
+    after?after():closeSheet();
+    if(opts.onSaved)opts.onSaved();
+    const hh=new Date().getHours(),bestA=bestSubj();
+    const ev=f.nm?{}:{rimonta:before!=null&&before<6&&afterA>=6,night:hh<5,alba:hh>=5&&hh<7,domenica:new Date().getDay()===0,sorpasso:!!(bestA&&bestA.id===s2.id&&bestB&&bestB.id!==s2.id&&S.subjects.filter(x=>x.grades.length).length>=3)};
+    S.xp=xp0+gain;
+    const nmis=checkMissions(),nb=checkBadges(ev);S.bsrc=S.bsrc||{};nb.forEach(id=>S.bsrc[id]=gid);save();
+    render();
+    celebrate(gv,label,s2,before,afterA,pp,{nb,nm:nmis,xp0,gain});
   };
   draw(false);
 }
