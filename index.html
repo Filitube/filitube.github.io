@@ -817,7 +817,7 @@ nav.tabs button[aria-selected="true"] svg{transform:translateY(-1px) scale(1.08)
 <div class="intro" id="intro" aria-hidden="true"><img class="logo" src="icon-512.png" alt=""></div>
 <div class="wrap">
   <div class="titlebar">
-    <div><div class="hello" id="hello">Ciao Filippo<button class="lvpill press" id="lvpill" data-goto="obiettivi"></button><button class="flpill press" id="flpill"></button></div><h1 id="ttl">I tuoi voti</h1></div>
+    <div><div class="hello" id="hello"><span id="helloName">Ciao!</span><button class="lvpill press" id="lvpill" data-goto="obiettivi"></button><button class="flpill press" id="flpill"></button></div><h1 id="ttl">I tuoi voti</h1></div>
     <button class="round press" id="settingsBtn" aria-label="Impostazioni"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></svg></button>
   </div>
   <div class="seg periods" id="periods" role="group" aria-label="Periodo">
@@ -1127,6 +1127,7 @@ function openGradeForm(subjectId,after,opts){
 function openSettings(){
   const [m,d]=S.cutoff.split('-');const y=new Date().getMonth()>=8?new Date().getFullYear()+1:new Date().getFullYear();
   openSheet(`<h3>Impostazioni</h3>
+  <label class="lbl" for="nm">Il tuo nome</label><input class="field" id="nm" maxlength="24" placeholder="Come ti chiami?" value="${esc(S.name||'')}" autocomplete="given-name">
   <label class="lbl" for="cut">Fine del primo periodo</label><input class="field" type="date" id="cut" value="${y}-${m}-${d}">
   <p class="note" style="margin-top:6px">Di solito 31 gennaio per il quadrimestre, fine dicembre per il trimestre.</p>
   <span class="lbl">Condotta nella media per i crediti</span><div class="seg" id="ic"><button data-v="1" aria-pressed="${S.inclCondotta}">Includi</button><button data-v="0" aria-pressed="${!S.inclCondotta}">Escludi</button></div>
@@ -1139,6 +1140,7 @@ function openSettings(){
   document.querySelectorAll('#tmode button').forEach(b=>b.onclick=()=>{S.theme.mode=b.dataset.v;save();applyTheme();openSettings()});
   document.querySelectorAll('[data-acc]').forEach(b=>b.onclick=()=>{S.theme.accent=b.dataset.acc;S.flags=S.flags||{};S.flags.tema=1;save();applyTheme();openSettings();unlockNow()});
     document.querySelectorAll('#thap button').forEach(b=>b.onclick=()=>{S.haptics=b.dataset.v==='1';save();openSettings();buzz(30)});
+  $('#nm').onchange=e=>{S.name=e.target.value.trim();save();setHello();toast(S.name?'Ciao '+S.name+'!':'Nome tolto')};
   $('#bkExp').onclick=()=>{
     S.flags=S.flags||{};S.flags.backup=1;save();setTimeout(unlockNow,600);
     const code=JSON.stringify(S);
@@ -2550,6 +2552,17 @@ if(document.fonts&&document.fonts.ready)document.fonts.ready.then(()=>moveInd(tr
 
 
 
+/* ---------- nome dell'utente ---------- */
+function setHello(){const el=$('#helloName');if(el)el.textContent=S.name?`Ciao ${S.name}`:'Ciao!'}
+function askName(){
+  openSheet(`<div class="exitq">${orbi('ecstatic',104)}<h3>Benvenuto su Pagella!</h3><p>Io sono Orbi, ti aiuto a tenere d'occhio i tuoi voti. Tu come ti chiami?</p></div>
+  <input class="field" id="wnm" maxlength="24" placeholder="Il tuo nome" autocomplete="given-name" style="margin-top:20px;text-align:center;font-size:18px">
+  <div class="row"><button class="btn press" id="wGo">Iniziamo</button></div><button class="advl" id="wSkip" style="margin:16px auto 0;justify-content:center;width:100%;color:var(--muted)">Salta per ora</button>`);
+  const go=()=>{S.name=$('#wnm').value.trim();S.askedName=1;save();setHello();closeSheet()};
+  $('#wGo').onclick=go;$('#wnm').onkeydown=e=>{if(e.key==='Enter')go()};
+  $('#wSkip').onclick=()=>{S.askedName=1;save();closeSheet()};
+}
+
 /* ===== intro ===== */
 
 document.querySelectorAll('nav.tabs button').forEach(b=>b.onclick=()=>goTab(b.dataset.tab));
@@ -2558,7 +2571,10 @@ applyTheme();initProgress();trackDays();
 let bootB=[];if(!S.v6){checkBadges();S.v6=1}else bootB=checkBadges();const bootM=checkMissions();save();
 document.addEventListener('contextmenu',e=>{if(!e.target.closest('input,textarea'))e.preventDefault()});
 document.addEventListener('dragstart',e=>{if(!e.target.closest('input,textarea'))e.preventDefault()});
-render();playIntro();if(bootB.length||bootM.length)setTimeout(()=>{celQ=celQ.concat(bootM.map(missionScreen),bootB.map(badgeScreen));if(!$('#cel').classList.contains('on'))showCel()},2600);
+if(S.name==null){if(S.subjects.length){S.name='Filippo';S.askedName=1}else S.name=''}
+setHello();
+render();playIntro();
+if(!S.name&&!S.askedName&&!S.subjects.length)setTimeout(()=>{if(!$('#sheet').classList.contains('on'))askName()},2700);if(bootB.length||bootM.length)setTimeout(()=>{celQ=celQ.concat(bootM.map(missionScreen),bootB.map(badgeScreen));if(!$('#cel').classList.contains('on'))showCel()},2600);
 $('#flpill').onclick=openStreak;
 $('#lvpill').onclick=()=>goTab('obiettivi');
 </script>
